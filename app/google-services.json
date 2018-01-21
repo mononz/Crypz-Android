@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "221287991300",
+    "firebase_url": "https://crypz-coin.firebaseio.com",
+    "project_id": "crypz-coin",
+    "storage_bucket": "crypz-coin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221287991300:android:093ede29d94374e9",
+        "android_client_info": {
+          "package_name": "com.mononz.crypz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221287991300-tt0ef1032atv0p7ee385or4dpp9f88gr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWK2pwKeqaMB_38X6eWWmQcMCHpMP1ZNs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

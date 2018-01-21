@@ -1,0 +1,195 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.getkeepsafe.dexcount'
+
+android {
+    signingConfigs {
+        debug {
+            keyAlias 'debug'
+            keyPassword 'kVTcnV78DMu6'
+            storeFile file('../.debug.jks')
+            storePassword 'kVTcnV78DMu6'
+        }
+        release {
+            keyAlias 'debug'
+            keyPassword 'kVTcnV78DMu6'
+            storeFile file('../.debug.jks')
+            storePassword 'kVTcnV78DMu6'
+        }
+    }
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.mononz.crypz"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode (System.getenv('CIRCLE_BUILD_NUM') != null ? Integer.valueOf(System.getenv('CIRCLE_BUILD_NUM')) : 1)
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            //applicationIdSuffix ".beta"
+            debuggable true
+            signingConfig signingConfigs.debug
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-rules-dev.pro'
+        }
+        release {
+            debuggable false
+            signingConfig signingConfigs.release
+            shrinkResources false
+            minifyEnabled true  // Deobfuscation mapping file located at app/build/outputs/mapping/release/
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFile 'proguard-rules-test.pro'
+        }
+    }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'BASIC_AUTH',  '"Basic 1qwer67574476547547636452654=="'
+    }
+
+    flavorDimensions 'mononz'
+
+    productFlavors {
+        dev {
+            multiDexEnabled true
+            dimension 'mononz'
+            buildConfigField 'String', 'SERVER_PATH', '"http://192.168.0.16:3001/"'
+            resValue "string", "application_name",  "Crypz Alpha"
+        }
+        staging {
+            multiDexEnabled true
+            dimension 'mononz'
+            buildConfigField 'String', 'SERVER_PATH', '"http://192.168.0.16:3000/"'
+            resValue "string", "application_name",  "Crypz Beta"
+        }
+        prod {
+            dimension 'mononz'
+            buildConfigField 'String', 'SERVER_PATH', '"http://192.168.0.16:3000/"'
+            resValue "string", "application_name",  "Crypz"
+        }
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    // Kotlin support
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    // Debug ONLY
+    debugImplementation "com.facebook.stetho:stetho:$rootProject.ext.stethoVersion"
+    debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.ext.stethoVersion"
+    debugImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
+    implementation "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
+
+    // Android
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:percent:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:gridlayout-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "com.google.firebase:firebase-ads:$rootProject.ext.googlePlayVersion"
+    implementation "com.google.firebase:firebase-core:$rootProject.ext.googlePlayVersion"
+    implementation "com.google.firebase:firebase-database:$rootProject.ext.googlePlayVersion"
+    implementation "com.google.firebase:firebase-messaging:$rootProject.ext.googlePlayVersion"
+    implementation "com.google.firebase:firebase-perf:$rootProject.ext.googlePlayVersion"
+    implementation "com.google.android.gms:play-services-tagmanager:$rootProject.ext.googlePlayVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // Android Architecture
+    implementation "android.arch.lifecycle:common-java8:$rootProject.ext.archVersion"
+    implementation "android.arch.lifecycle:extensions:$rootProject.ext.archVersion"
+    kapt "android.arch.lifecycle:compiler:$rootProject.ext.archVersion"
+    implementation "android.arch.persistence.room:runtime:$rootProject.ext.archVersion"
+    kapt "android.arch.persistence.room:compiler:$rootProject.ext.archVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.ext.archVersion"
+
+    // Reporting
+    implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlyticsVersion") { transitive = true }
+
+    // Injection
+    implementation "com.jakewharton:butterknife:$rootProject.ext.butterKnifeVersion"
+    kapt "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnifeVersion"
+    implementation "com.google.dagger:dagger:$rootProject.ext.dagger2Version"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.ext.dagger2Version"
+    implementation "com.google.dagger:dagger-android:$rootProject.ext.dagger2Version"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.ext.dagger2Version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.ext.dagger2Version"
+
+    // Network
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$rootProject.ext.glideVersion"
+
+    // Other Libraries
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxKotlinVersion"
+
+    // Testing Dependencies
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion", {
+        exclude group: "com.android.support", module: "support-annotations"
+    })
+}
+
+/*
+Resolves dependency versions across test and production APKs, specifically, transitive
+dependencies. This is required since Espresso internally has a dependency on support-annotations.
+*/
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
+}
+
+/*
+All direct/transitive dependencies shared between your test and production APKs need to be
+excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
+excluding these dependencies from your test configuration will result in an dex pre-verifier error
+at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)
+*/
+configurations.compile.dependencies.each { compileDependency ->
+    println "Excluding compile dependency: ${compileDependency.getName()}"
+    configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
+        configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'

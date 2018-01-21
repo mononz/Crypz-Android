@@ -6,7 +6,6 @@ import com.mononz.crypz.BuildConfig
 import com.mononz.crypz.controller.AnalyticsHelper
 import com.mononz.crypz.controller.DeviceHelper
 import com.mononz.crypz.controller.ErrorHelper
-import com.mononz.crypz.controller.ImageHelper
 import com.mononz.crypz.controller.PreferenceHelper
 import com.mononz.crypz.data.local.CrypzDatabase
 import com.mononz.crypz.data.remote.NetworkInterface
@@ -37,12 +36,6 @@ class AppModule {
     @Singleton
     fun providesAnalytics(application: Application): AnalyticsHelper {
         return AnalyticsHelper(application)
-    }
-
-    @Provides
-    @Singleton
-    fun providesGlide(application: Application): ImageHelper {
-        return ImageHelper(application)
     }
 
     @Provides

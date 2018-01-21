@@ -50,7 +50,6 @@ ext {
     crashlyticsVersion = '2.8.0@aar'  // https://fabric.io/kits/android/crashlytics/install
 
     // Injection
-    butterKnifeVersion = '8.8.1'      // https://github.com/JakeWharton/butterknife/releases
     dagger2Version = '2.14.1'         // https://github.com/google/dagger/releases
 
     // Network

@@ -6,6 +6,7 @@ import com.mononz.crypz.injection.ViewModelFactory
 
 import com.mononz.crypz.injection.ViewModelKey
 import com.mononz.crypz.viewmodel.GenericViewModel
+import com.mononz.crypz.viewmodel.MainViewModel
 
 import dagger.Binds
 import dagger.Module
@@ -18,6 +19,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GenericViewModel::class)
     internal abstract fun bindsGenericViewModel(viewModel: GenericViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun bindsMainViewModel(viewModel: MainViewModel): ViewModel
 
     @Binds
     internal abstract fun bindsViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

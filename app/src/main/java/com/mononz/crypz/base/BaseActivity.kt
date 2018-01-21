@@ -25,7 +25,7 @@ abstract class BaseActivity<VM : ViewModel> : AppCompatActivity(), HasFragmentIn
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private var viewModel: VM? = null
+    var viewModel: VM? = null
 
     abstract fun getViewModel(): Class<VM>
 

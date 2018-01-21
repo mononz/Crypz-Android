@@ -8,6 +8,7 @@ import android.arch.persistence.room.RoomDatabase
 import com.mononz.crypz.data.local.dao.CoinDao
 import com.mononz.crypz.data.local.dao.MarketCoinDao
 import com.mononz.crypz.data.local.dao.MarketDao
+import com.mononz.crypz.data.local.dao.StakeDao
 import com.mononz.crypz.data.local.entity.CoinEntity
 import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
@@ -24,14 +25,14 @@ abstract class CrypzDatabase : RoomDatabase() {
     abstract fun coinDao(): CoinDao
     abstract fun marketDao(): MarketDao
     abstract fun marketCoinDao(): MarketCoinDao
+    abstract fun stakeDao(): StakeDao
 
     companion object {
 
         private val databaseName = "crypz.db"
 
         fun buildDatabase(application: Application): CrypzDatabase {
-            return Room.databaseBuilder(application, CrypzDatabase::class.java, databaseName)
-                    .build()
+            return Room.databaseBuilder(application, CrypzDatabase::class.java, databaseName).build()
         }
     }
 }

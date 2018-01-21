@@ -37,8 +37,7 @@ class AnalyticsHelper @Inject constructor(context: Application) {
     // Errors
 
     fun trackError(error: ErrorCommon?) {
-        if (error == null || error.message == null) return
-        Crashlytics.log(error.message)
+        Crashlytics.log(error?.message)
     }
 
     fun trackException(e: Exception) {

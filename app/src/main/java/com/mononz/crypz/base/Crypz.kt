@@ -30,6 +30,7 @@ class Crypz : Application(), HasActivityInjector {
                 .inject(this)
 
         repository.sync(false)
+        //repository.fakeAddData()
     }
 
     override fun activityInjector(): AndroidInjector<Activity>? {

@@ -4,10 +4,11 @@ import android.arch.lifecycle.LiveData
 import com.mononz.crypz.base.Constants
 import com.mononz.crypz.controller.PreferenceHelper
 import com.mononz.crypz.data.local.CrypzDatabase
-import com.mononz.crypz.data.local.custom.CoinSummary
+import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.CoinEntity
 import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
+import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.data.remote.NetworkInterface
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,7 +32,7 @@ class Repository @Inject constructor() {
 
     private val disposables = CompositeDisposable()
 
-    fun getCoins(): LiveData<List<CoinSummary>> {
+    fun getCoins(): LiveData<List<StakeSummary>> {
         return database.marketCoinDao().query()
     }
 
@@ -107,4 +108,17 @@ class Repository @Inject constructor() {
                         onComplete = { println("Done!") }
                 )}
 
+    fun fakeAddData() {
+        val stakes = ArrayList<StakeEntity>()
+
+        stakes.add(StakeEntity.createEntity(1, 15848.91, 0.02))
+        stakes.add(StakeEntity.createEntity(3, 1455.28, .6))
+        stakes.add(StakeEntity.createEntity(6, 2448.42, 3.0))
+        stakes.add(StakeEntity.createEntity(8, 256.16, 6.0))
+
+        asyncSave(Callable{
+            database.stakeDao().insert(stakes)
+            true
+        })
+    }
 }

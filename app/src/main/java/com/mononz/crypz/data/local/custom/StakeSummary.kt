@@ -6,11 +6,15 @@ import android.arch.persistence.room.Relation
 import com.mononz.crypz.data.local.entity.CoinEntity
 import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
+import com.mononz.crypz.data.local.entity.StakeEntity
 
-class CoinSummary {
+class StakeSummary {
 
     @Embedded
     var marketCoin: MarketCoinEntity? = null
+
+    @Relation(parentColumn = "market_coin_id", entityColumn = "market_coin_id", entity = StakeEntity::class)
+    var stakes: List<StakeEntity>? = null
 
     @Relation(parentColumn = "market_id", entityColumn = "market_id", entity = MarketEntity::class)
     var markets: List<MarketEntity>? = null

@@ -1,16 +1,13 @@
 package com.mononz.crypz.injection.component
 
 import android.app.Application
-
 import com.mononz.crypz.base.Crypz
 import com.mononz.crypz.injection.module.ActivityBuilderModule
 import com.mononz.crypz.injection.module.AppModule
-
-import javax.inject.Singleton
-
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [

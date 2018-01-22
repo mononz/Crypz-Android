@@ -3,9 +3,9 @@ package com.mononz.crypz.extension
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
-import java.text.DecimalFormat
 
 
 fun Double.pricify() : String {

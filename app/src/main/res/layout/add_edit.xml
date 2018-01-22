@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <include
+        android:id="@+id/tool"
+        layout="@layout/include_toolbar" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tool"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/market"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Market"
+            android:labelFor="@+id/market_dropdown"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/market_dropdown"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/market_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/coin"
+            app:layout_constraintTop_toBottomOf="@+id/market"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/coin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Coin"
+            android:labelFor="@+id/coin_dropdown"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/coin_dropdown"
+            app:layout_constraintTop_toBottomOf="@+id/market_dropdown" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/coin_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/stake"
+            app:layout_constraintTop_toBottomOf="@+id/coin"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/stake"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stake"
+            android:labelFor="@+id/stake_input"
+            android:paddingTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/stake_input"
+            app:layout_constraintTop_toBottomOf="@+id/coin_dropdown" />
+
+        <EditText
+            android:id="@+id/stake_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:hint="6.25"
+            app:layout_constraintTop_toBottomOf="@+id/stake" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        app:srcCompat="@drawable/ic_tick"
+        style="@style/FAB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

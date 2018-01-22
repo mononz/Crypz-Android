@@ -1,7 +1,6 @@
 package com.mononz.crypz.injection.module
 
 import android.app.Application
-
 import com.mononz.crypz.BuildConfig
 import com.mononz.crypz.controller.AnalyticsHelper
 import com.mononz.crypz.controller.DeviceHelper
@@ -11,17 +10,14 @@ import com.mononz.crypz.data.local.CrypzDatabase
 import com.mononz.crypz.data.remote.NetworkInterface
 import com.mononz.crypz.data.remote.RequestInterceptor
 import com.mononz.crypz.library.StethoUtils
-
-import java.util.concurrent.TimeUnit
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module(includes = [(ViewModelModule::class)])
 class AppModule {

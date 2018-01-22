@@ -3,10 +3,8 @@ package com.mononz.crypz.data.remote
 import com.mononz.crypz.BuildConfig
 import com.mononz.crypz.controller.PreferenceHelper
 import okhttp3.Interceptor
-
-import java.io.IOException
-
 import okhttp3.Response
+import java.io.IOException
 
 class RequestInterceptor(private val session: PreferenceHelper) : okhttp3.Interceptor {
 

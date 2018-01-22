@@ -21,6 +21,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".view.activity.AddEditActivity"
+            android:label="Track New"
+            android:theme="@style/AppTheme" />
+
     </application>
 
 </manifest>

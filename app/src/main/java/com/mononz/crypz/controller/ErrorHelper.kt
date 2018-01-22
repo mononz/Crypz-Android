@@ -1,15 +1,13 @@
 package com.mononz.crypz.controller
 
 import com.mononz.crypz.data.remote.model.ErrorCommon
+import retrofit2.HttpException
+import retrofit2.Retrofit
 import java.net.ConnectException
 import java.net.SocketException
 import java.net.SocketTimeoutException
-
 import javax.inject.Inject
 import javax.inject.Singleton
-
-import retrofit2.HttpException
-import retrofit2.Retrofit
 
 @Singleton
 class ErrorHelper @Inject constructor(private val analytics: AnalyticsHelper, private val retrofit: Retrofit) {

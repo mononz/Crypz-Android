@@ -2,15 +2,12 @@ package com.mononz.crypz.controller
 
 import android.app.Application
 import android.os.Bundle
-
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.mononz.crypz.data.remote.model.ErrorCommon
-
+import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 import javax.inject.Singleton
-
-import io.fabric.sdk.android.Fabric
 
 @Singleton
 class AnalyticsHelper @Inject constructor(context: Application) {

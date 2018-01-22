@@ -4,18 +4,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseAdapter
 import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.extension.pricify
 import com.mononz.crypz.extension.pricify2
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
 import kotlinx.android.synthetic.main.main_element.view.*
+import java.util.*
+import javax.inject.Inject
 
 class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapter.ViewHolder, StakeSummary, MainListAdapter.Callback>() {
 

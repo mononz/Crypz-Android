@@ -5,11 +5,9 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-
-import javax.inject.Inject
-
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
+import javax.inject.Inject
 
 abstract class BaseFragment<VM : ViewModel> : Fragment() {
 

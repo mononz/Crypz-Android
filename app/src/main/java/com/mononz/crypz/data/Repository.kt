@@ -1,6 +1,7 @@
 package com.mononz.crypz.data
 
 import android.arch.lifecycle.LiveData
+import android.text.TextUtils
 import com.mononz.crypz.base.Constants
 import com.mononz.crypz.controller.PreferenceHelper
 import com.mononz.crypz.data.local.CrypzDatabase
@@ -11,6 +12,7 @@ import com.mononz.crypz.data.local.entity.MarketEntity
 import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.data.remote.NetworkInterface
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -19,9 +21,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONObject
 import timber.log.Timber
-import java.util.ArrayList
 import java.util.concurrent.Callable
-
 import javax.inject.Inject
 
 class Repository @Inject constructor() {
@@ -36,6 +36,10 @@ class Repository @Inject constructor() {
         return database.marketCoinDao().query()
     }
 
+    fun getStakes(): Single<List<StakeEntity>> {
+        return database.stakeDao().getStakes()
+    }
+
     fun sync(force: Boolean) {
         val thresholdMillis = 1 * 60 * 1000  // 1 mins
         if (force || System.currentTimeMillis() > session.lastUpdated + thresholdMillis) {
@@ -44,7 +48,7 @@ class Repository @Inject constructor() {
     }
 
     private fun sync() {
-        Timber.d("onPerformSync")
+        Timber.d("sync")
 
         val json = JSONObject()
         try {
@@ -75,14 +79,13 @@ class Repository @Inject constructor() {
                                 true
                             })
                         },
-                        onError =  {
+                        onError = {
                             it.printStackTrace()
                         },
                         onComplete = {
                             session.lastUpdated = System.currentTimeMillis()
                             Timber.d("Sync Complete")
-                        }
-                )
+                        })
         disposables.add(d)
     }
 
@@ -120,5 +123,9 @@ class Repository @Inject constructor() {
             database.stakeDao().insert(stakes)
             true
         })
+    }
+
+    private fun getPrices(ids : ArrayList<String>) : Observable<String> {
+        return network.prices(TextUtils.join(",", ids))
     }
 }

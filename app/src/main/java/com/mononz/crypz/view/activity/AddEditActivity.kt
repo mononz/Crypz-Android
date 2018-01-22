@@ -34,7 +34,7 @@ class AddEditActivity : BaseActivity<GenericViewModel>() {
 
         fab.setOnClickListener {
             //Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show()
-            finish()
+            onBackPressed()
         }
 
         val markets = arrayOf("CoinBase", "BTC Markets")

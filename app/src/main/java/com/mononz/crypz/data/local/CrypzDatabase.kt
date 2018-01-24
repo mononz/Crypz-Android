@@ -14,11 +14,11 @@ import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
 import com.mononz.crypz.data.local.entity.StakeEntity
 
-@Database(entities = arrayOf(
-        CoinEntity::class,
-        MarketEntity::class,
-        MarketCoinEntity::class,
-        StakeEntity::class),
+@Database(entities = [
+    (CoinEntity::class),
+    (MarketEntity::class),
+    (MarketCoinEntity::class),
+    (StakeEntity::class)],
         version = 1)
 abstract class CrypzDatabase : RoomDatabase() {
 
@@ -29,7 +29,7 @@ abstract class CrypzDatabase : RoomDatabase() {
 
     companion object {
 
-        private val databaseName = "crypz.db"
+        private const val databaseName = "crypz.db"
 
         fun buildDatabase(application: Application): CrypzDatabase {
             return Room.databaseBuilder(application, CrypzDatabase::class.java, databaseName).build()

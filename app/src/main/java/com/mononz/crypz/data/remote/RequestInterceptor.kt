@@ -13,6 +13,9 @@ class RequestInterceptor(private val session: PreferenceHelper) : okhttp3.Interc
         var originalRequest = chain.request()
         val builder = originalRequest.newBuilder()
         builder.addHeader("Authorization", BuildConfig.BASIC_AUTH)
+        builder.addHeader("Platform", "Android")
+        builder.addHeader("Version", BuildConfig.VERSION_NAME)
+        builder.addHeader("VersionCode", BuildConfig.VERSION_CODE.toString())
         originalRequest = builder.build()
 
         return chain.proceed(originalRequest)

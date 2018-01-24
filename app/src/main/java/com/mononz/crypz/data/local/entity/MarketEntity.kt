@@ -3,18 +3,23 @@ package com.mononz.crypz.data.local.entity
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.mononz.crypz.data.local.entity.MarketEntity.Companion.TABLE_NAME
 
 import com.mononz.crypz.data.remote.model.MsSync
 
-@Entity(tableName = "market")
+@Entity(tableName = TABLE_NAME)
 class MarketEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "market_id")
     var marketId: Int? = null
+    @ColumnInfo(name = "name")
     var name: String? = null
+    @ColumnInfo(name = "website")
     var website: String? = null
+    @ColumnInfo(name = "image")
     var image: String? = null
+    @ColumnInfo(name = "enabled")
     var enabled: Int? = null
     @ColumnInfo(name = "created_at")
     var createdAt: String? = null
@@ -23,7 +28,7 @@ class MarketEntity {
 
     companion object {
 
-        val TABLE_NAME = "market"
+        const val TABLE_NAME = "market"
 
         fun createEntity(json: MsSync.Market): MarketEntity {
             val entity = MarketEntity()

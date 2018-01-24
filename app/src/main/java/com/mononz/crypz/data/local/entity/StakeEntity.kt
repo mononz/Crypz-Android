@@ -9,6 +9,8 @@ import com.mononz.crypz.data.local.entity.StakeEntity.Companion.TABLE_NAME
 class StakeEntity {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "stake_id")
+    var stakeId: Int? = null
     @ColumnInfo(name = "market_coin_id")
     var marketCoinId: Int? = null
     @ColumnInfo(name = "price")

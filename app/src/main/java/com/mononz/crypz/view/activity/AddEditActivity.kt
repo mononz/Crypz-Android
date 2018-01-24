@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.transition.Slide
 import android.view.Gravity
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
+import com.mononz.crypz.data.Repository
 import com.mononz.crypz.viewmodel.GenericViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.add_edit.*
 import kotlinx.android.synthetic.main.include_toolbar.*
-
+import javax.inject.Inject
 
 class AddEditActivity : BaseActivity<GenericViewModel>() {
+
+    @Inject lateinit var repository: Repository
 
     override fun getViewModel(): Class<GenericViewModel> {
         return GenericViewModel::class.java
@@ -33,7 +37,8 @@ class AddEditActivity : BaseActivity<GenericViewModel>() {
         }
 
         fab.setOnClickListener {
-            //Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Adding fake data", Toast.LENGTH_SHORT).show()
+            repository.fakeAddData()
             onBackPressed()
         }
 

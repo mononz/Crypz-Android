@@ -11,6 +11,7 @@ import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
 import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.data.remote.NetworkInterface
+import com.mononz.crypz.data.remote.model.MsPrices
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,9 +20,11 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
 import java.util.concurrent.Callable
+import java.util.function.Consumer
 import javax.inject.Inject
 
 class Repository @Inject constructor() {
@@ -119,13 +122,23 @@ class Repository @Inject constructor() {
         stakes.add(StakeEntity.createEntity(6, 2448.42, 3.0))
         stakes.add(StakeEntity.createEntity(8, 256.16, 6.0))
 
-        asyncSave(Callable{
+        asyncSave(Callable {
             database.stakeDao().insert(stakes)
-            true
         })
     }
 
-    private fun getPrices(ids : ArrayList<String>) : Observable<String> {
-        return network.prices(TextUtils.join(",", ids))
+    private fun getPrices(entities : ArrayList<StakeEntity>) : Observable<MsPrices> {
+        val stakes = JSONArray()
+        entities.forEach({
+            try {
+                val json = JSONObject()
+                json.put("stake_id", it.stakeId)
+                json.put("market_coin_id", it.marketCoinId)
+                stakes.put(json)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
+        return network.prices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
     }
 }

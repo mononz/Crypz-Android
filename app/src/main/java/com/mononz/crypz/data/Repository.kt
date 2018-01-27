@@ -127,18 +127,9 @@ class Repository @Inject constructor() {
 
     fun getPrices(entities : List<StakeEntity>) : Observable<List<MsPrices>> {
         val stakes = JSONArray()
-        Timber.d("size " + entities.size)
         entities.forEach({
-            try {
-                val json = JSONObject()
-                json.put("stake_id", it.stakeId)
-                json.put("market_coin_id", it.marketCoinId)
-                stakes.put(json)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            stakes.put(StakeEntity.toJson(it))
         })
-        Timber.d("this -> %s", stakes.toString())
         return network.prices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
     }
 

@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 import com.mononz.crypz.data.local.entity.StakeEntity.Companion.TABLE_NAME
 import com.mononz.crypz.data.remote.model.MsPrices
 import com.mononz.crypz.extension.newUtc
+import org.json.JSONObject
 import java.util.*
 
 @Entity(tableName = TABLE_NAME)
@@ -48,6 +49,21 @@ class StakeEntity {
             entity.createdAt = json.created_at
             entity.updatedAt = Date().newUtc()
             return entity
+        }
+
+        fun toJson(entity: StakeEntity): JSONObject {
+            val json = JSONObject()
+            try {
+                json.put("stake_id", entity.stakeId)
+                json.put("market_coin_id", entity.marketCoinId)
+                json.put("price", entity.price)
+                json.put("stake", entity.stake)
+                json.put("created_at", entity.createdAt)
+                json.put("updated_at", entity.updatedAt)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return json
         }
     }
 }

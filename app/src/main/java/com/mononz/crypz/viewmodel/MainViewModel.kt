@@ -20,11 +20,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
         return repository.getCoins()
     }
 
-    fun getStakes(): Single<List<StakeEntity>> {
+    fun getStakesForNetwork(): Single<List<StakeEntity>> {
         return repository.getStakesForNetwork()
     }
 
-    fun getPrices(stakes : List<StakeEntity>) : Observable<List<MsPrices>> {
+    fun getStakes(stakes : List<StakeEntity>) : Observable<List<MsPrices>> {
         return repository.getPrices(stakes)
     }
 

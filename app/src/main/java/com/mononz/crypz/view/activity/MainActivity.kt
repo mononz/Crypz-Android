@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -68,9 +67,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         })
 
         swiperefresh.setOnRefreshListener({
-            Handler().postDelayed({
-                updateStakes()
-            }, 3000)
+            updateStakes()
         })
 
         fab.setOnClickListener {
@@ -85,7 +82,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     private fun updateStakes() {
-        viewModel?.getStakes()
+        viewModel?.getStakesForNetwork()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribeBy(
@@ -98,8 +95,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         })
     }
 
-    private fun updateStakePrices(ids: List<StakeEntity>) {
-        val d : Disposable = viewModel?.getPrices(ids)!!
+    private fun updateStakePrices(stakes: List<StakeEntity>) {
+        val d : Disposable = viewModel?.getStakes(stakes)!!
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy (

@@ -6,6 +6,7 @@ import com.bumptech.glide.request.RequestOptions
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
+import java.text.SimpleDateFormat
 
 
 fun Double.pricify() : String {
@@ -29,4 +30,14 @@ fun ImageView.loadUrlEmpty(url: String) {
             .load(url)
             .apply(options)
             .into(this)
+}
+
+fun Date.newUtc() : String {
+    val calendar = Calendar.getInstance()
+    calendar.timeZone = TimeZone.getTimeZone("UTC")
+    calendar.time = this
+
+    val time = calendar.time
+    val outputFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.000'Z'", Locale.US)
+    return outputFmt.format(time)
 }

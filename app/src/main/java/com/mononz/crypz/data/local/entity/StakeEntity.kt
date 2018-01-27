@@ -4,6 +4,9 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.mononz.crypz.data.local.entity.StakeEntity.Companion.TABLE_NAME
+import com.mononz.crypz.data.remote.model.MsPrices
+import com.mononz.crypz.extension.newUtc
+import java.util.*
 
 @Entity(tableName = TABLE_NAME)
 class StakeEntity {
@@ -31,6 +34,19 @@ class StakeEntity {
             entity.marketCoinId = market_coin_id
             entity.price = price
             entity.stake = stake
+            entity.createdAt = Date().newUtc()
+            entity.updatedAt = Date().newUtc()
+            return entity
+        }
+
+        fun createEntity(json: MsPrices): StakeEntity {
+            val entity = StakeEntity()
+            entity.stakeId = json.stake_id
+            entity.marketCoinId = json.market_coin_id
+            entity.price = json.price
+            entity.stake = json.stake
+            entity.createdAt = json.created_at
+            entity.updatedAt = Date().newUtc()
             return entity
         }
     }

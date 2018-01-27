@@ -24,7 +24,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
         return repository.getStakesForNetwork()
     }
 
-    fun getPrices(stakes : List<StakeEntity>) : Observable<MsPrices> {
+    fun getPrices(stakes : List<StakeEntity>) : Observable<List<MsPrices>> {
         return repository.getPrices(stakes)
+    }
+
+    fun updateStakes(prices : List<MsPrices>) {
+        val entities = ArrayList<StakeEntity>()
+        prices.forEach({
+            entities.add(StakeEntity.createEntity(it))
+        })
+        return repository.updateStakes(entities)
     }
 }

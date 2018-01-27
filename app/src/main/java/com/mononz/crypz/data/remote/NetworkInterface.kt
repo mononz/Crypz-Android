@@ -17,6 +17,6 @@ interface NetworkInterface {
     @POST("prices/app")
     fun prices(@Header("Content-Type") contentType: String,
                @Body json: RequestBody)
-            : Observable<MsPrices>
+            : Observable<List<MsPrices>>
 
 }

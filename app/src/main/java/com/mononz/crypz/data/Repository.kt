@@ -125,7 +125,7 @@ class Repository @Inject constructor() {
         })
     }
 
-    fun getPrices(entities : List<StakeEntity>) : Observable<MsPrices> {
+    fun getPrices(entities : List<StakeEntity>) : Observable<List<MsPrices>> {
         val stakes = JSONArray()
         Timber.d("size " + entities.size)
         entities.forEach({
@@ -140,5 +140,11 @@ class Repository @Inject constructor() {
         })
         Timber.d("this -> %s", stakes.toString())
         return network.prices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
+    }
+
+    fun updateStakes(entities: List<StakeEntity>) {
+        asyncSave(Callable {
+            database.stakeDao().updateStakes(entities)
+        })
     }
 }

@@ -99,24 +99,19 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     private fun updateStakePrices(ids: List<StakeEntity>) {
-        swiperefresh.isRefreshing = false
-
-        if (viewModel == null) {
-            Timber.d("viewModel is null")
-        } else {
-            Timber.d("viewModel update")
-            viewModel?.getPrices(ids)
-        }
-
         val d : Disposable = viewModel?.getPrices(ids)!!
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy (
                         onNext = {
                             Timber.d("Resulted")
+                            viewModel?.updateStakes(it)
                         },
                         onError = {
                             it.printStackTrace()
+                        },
+                        onComplete = {
+                            swiperefresh.isRefreshing = false
                         })
         disposables.add(d)
     }

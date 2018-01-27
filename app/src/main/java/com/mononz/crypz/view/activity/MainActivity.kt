@@ -12,10 +12,13 @@ import android.support.v7.widget.RecyclerView
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.data.local.custom.StakeSummary
+import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.include_toolbar.*
@@ -23,10 +26,11 @@ import kotlinx.android.synthetic.main.main_activity.*
 import timber.log.Timber
 import javax.inject.Inject
 
-
 class MainActivity : BaseActivity<MainViewModel>() {
 
     @Inject lateinit var adapter : MainListAdapter
+
+    private var disposables = CompositeDisposable()
 
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
@@ -86,12 +90,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribeBy(
                         onSuccess = {
-                            val ids = ArrayList<String>()
-                            it.forEach({
-                                ids.add(it.marketCoinId.toString())
-                            })
-                            Timber.d("list: %s", ids.toString())
-                            updateStakePrices(ids)
+                            updateStakePrices(it)
                         },
                         onError = {
                             it.printStackTrace()
@@ -99,7 +98,26 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         })
     }
 
-    private fun updateStakePrices(ids: ArrayList<String>) {
+    private fun updateStakePrices(ids: List<StakeEntity>) {
         swiperefresh.isRefreshing = false
+
+        if (viewModel == null) {
+            Timber.d("viewModel is null")
+        } else {
+            Timber.d("viewModel update")
+            viewModel?.getPrices(ids)
+        }
+
+        val d : Disposable = viewModel?.getPrices(ids)!!
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy (
+                        onNext = {
+                            Timber.d("Resulted")
+                        },
+                        onError = {
+                            it.printStackTrace()
+                        })
+        disposables.add(d)
     }
 }

@@ -12,7 +12,7 @@ interface StakeDao {
     fun insert(entities: List<StakeEntity>)
 
     @Transaction
-    @Query("SELECT market_coin_id FROM stake")
-    fun getStakes(): Single<List<StakeEntity>>
+    @Query("SELECT stake_id,market_coin_id,price FROM stake")
+    fun getStakesForNetwork(): Single<List<StakeEntity>>
 
 }

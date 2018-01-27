@@ -1,7 +1,6 @@
 package com.mononz.crypz.data
 
 import android.arch.lifecycle.LiveData
-import android.text.TextUtils
 import com.mononz.crypz.base.Constants
 import com.mononz.crypz.controller.PreferenceHelper
 import com.mononz.crypz.data.local.CrypzDatabase
@@ -24,7 +23,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
 import java.util.concurrent.Callable
-import java.util.function.Consumer
 import javax.inject.Inject
 
 class Repository @Inject constructor() {
@@ -39,8 +37,8 @@ class Repository @Inject constructor() {
         return database.marketCoinDao().query()
     }
 
-    fun getStakes(): Single<List<StakeEntity>> {
-        return database.stakeDao().getStakes()
+    fun getStakesForNetwork(): Single<List<StakeEntity>> {
+        return database.stakeDao().getStakesForNetwork()
     }
 
     fun sync(force: Boolean) {
@@ -127,8 +125,9 @@ class Repository @Inject constructor() {
         })
     }
 
-    private fun getPrices(entities : ArrayList<StakeEntity>) : Observable<MsPrices> {
+    fun getPrices(entities : List<StakeEntity>) : Observable<MsPrices> {
         val stakes = JSONArray()
+        Timber.d("size " + entities.size)
         entities.forEach({
             try {
                 val json = JSONObject()
@@ -139,6 +138,7 @@ class Repository @Inject constructor() {
                 e.printStackTrace()
             }
         })
+        Timber.d("this -> %s", stakes.toString())
         return network.prices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
     }
 }

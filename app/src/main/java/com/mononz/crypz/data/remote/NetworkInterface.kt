@@ -14,8 +14,7 @@ interface NetworkInterface {
              @Body json: RequestBody)
             : Observable<MsSync>
 
-    @FormUrlEncoded
-    @POST("prices")
+    @POST("prices/app")
     fun prices(@Header("Content-Type") contentType: String,
                @Body json: RequestBody)
             : Observable<MsPrices>

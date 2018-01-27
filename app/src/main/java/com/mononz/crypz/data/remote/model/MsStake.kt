@@ -1,6 +1,6 @@
 package com.mononz.crypz.data.remote.model
 
-class MsPrices {
+class MsStake {
 
     var stake_id: Int? = null
     var market_coin_id: Int? = null

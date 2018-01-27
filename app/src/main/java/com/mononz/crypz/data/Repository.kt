@@ -10,7 +10,7 @@ import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
 import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.data.remote.NetworkInterface
-import com.mononz.crypz.data.remote.model.MsPrices
+import com.mononz.crypz.data.remote.model.MsStake
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -125,12 +125,12 @@ class Repository @Inject constructor() {
         })
     }
 
-    fun getPrices(entities : List<StakeEntity>) : Observable<List<MsPrices>> {
+    fun renewStakePrices(entities : List<StakeEntity>) : Observable<List<MsStake>> {
         val stakes = JSONArray()
         entities.forEach({
             stakes.put(StakeEntity.toJson(it))
         })
-        return network.prices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
+        return network.renewStakePrices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
     }
 
     fun updateStakes(entities: List<StakeEntity>) {

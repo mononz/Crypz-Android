@@ -6,7 +6,7 @@ import com.mononz.crypz.data.Repository
 
 import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity
-import com.mononz.crypz.data.remote.model.MsPrices
+import com.mononz.crypz.data.remote.model.MsStake
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -24,11 +24,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
         return repository.getStakesForNetwork()
     }
 
-    fun getStakes(stakes : List<StakeEntity>) : Observable<List<MsPrices>> {
-        return repository.getPrices(stakes)
+    fun getStakes(stakes : List<StakeEntity>) : Observable<List<MsStake>> {
+        return repository.renewStakePrices(stakes)
     }
 
-    fun updateStakes(prices : List<MsPrices>) {
+    fun updateStakes(prices : List<MsStake>) {
         val entities = ArrayList<StakeEntity>()
         prices.forEach({
             entities.add(StakeEntity.createEntity(it))

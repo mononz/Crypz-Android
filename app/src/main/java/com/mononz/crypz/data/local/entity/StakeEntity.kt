@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.mononz.crypz.data.local.entity.StakeEntity.Companion.TABLE_NAME
-import com.mononz.crypz.data.remote.model.MsPrices
+import com.mononz.crypz.data.remote.model.MsStake
 import com.mononz.crypz.extension.newUtc
 import org.json.JSONObject
 import java.util.*
@@ -40,7 +40,7 @@ class StakeEntity {
             return entity
         }
 
-        fun createEntity(json: MsPrices): StakeEntity {
+        fun createEntity(json: MsStake): StakeEntity {
             val entity = StakeEntity()
             entity.stakeId = json.stake_id
             entity.marketCoinId = json.market_coin_id

@@ -40,6 +40,16 @@ class StakeEntity {
             return entity
         }
 
+        fun createEntity(market_coin_id: Int?, stake: Double?): StakeEntity {
+            val entity = StakeEntity()
+            entity.marketCoinId = market_coin_id
+            entity.price = 0.0
+            entity.stake = stake
+            entity.createdAt = Date().newUtc()
+            entity.updatedAt = Date().newUtc()
+            return entity
+        }
+
         fun createEntity(json: MsStake): StakeEntity {
             val entity = StakeEntity()
             entity.stakeId = json.stake_id

@@ -23,7 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            tools:listitem="@layout/main_element"/>
+            tools:listitem="@layout/main_element"
+            android:clipToPadding="false"
+            android:paddingBottom="120dp"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

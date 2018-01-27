@@ -1,8 +1,8 @@
 package com.mononz.crypz.data.local.dao
 
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.mononz.crypz.data.local.entity.CoinEntity
+import io.reactivex.Single
 
 @Dao
 interface CoinDao {
@@ -11,7 +11,10 @@ interface CoinDao {
     fun insert(entities: List<CoinEntity>)
 
     @Transaction
-    @Query("SELECT * FROM coin ORDER BY name")
-    fun query(): LiveData<CoinEntity>
+    @Query("SELECT * FROM coin " +
+            "INNER JOIN market_coin ON market_coin.coin_id = coin.coin_id " +
+            "WHERE coin.enabled=1 AND market_coin.market_id=:marketId AND coin.name IS NOT NULL AND coin.code IS NOT NULL " +
+            "ORDER BY coin.code ASC")
+    fun getEnabledCoins(marketId : Int): Single<List<CoinEntity>>
 
 }

@@ -112,17 +112,10 @@ class Repository @Inject constructor() {
                         onComplete = { println("Done!") }
                 )}
 
-    fun fakeAddData() {
-        val stakes = ArrayList<StakeEntity>()
-
-        stakes.add(StakeEntity.createEntity(1, 15848.91, 0.02))
-        stakes.add(StakeEntity.createEntity(3, 1455.28, .6))
-        stakes.add(StakeEntity.createEntity(6, 2448.42, 3.0))
-        stakes.add(StakeEntity.createEntity(8, 256.16, 6.0))
-
-        asyncSave(Callable {
-            database.stakeDao().insert(stakes)
-        })
+    fun insertStake(entity : StakeEntity) : Callable<Unit> {
+        return Callable {
+            database.stakeDao().insert(entity)
+        }
     }
 
     fun renewStakePrices(entities : List<StakeEntity>) : Observable<List<MsStake>> {
@@ -137,5 +130,17 @@ class Repository @Inject constructor() {
         asyncSave(Callable {
             database.stakeDao().updateStakes(entities)
         })
+    }
+
+    fun getEnabledMarkets() : Single<List<MarketEntity>> {
+        return database.marketDao().getEnabledMarkets()
+    }
+
+    fun getEnabledCoins(marketId : Int): Single<List<CoinEntity>> {
+        return database.coinDao().getEnabledCoins(marketId)
+    }
+
+    fun validateMarketCoinSelection(marketId : Int, coinId : Int): Single<MarketCoinEntity> {
+        return database.marketCoinDao().validateMarketCoinSelection(marketId, coinId)
     }
 }

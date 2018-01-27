@@ -1,6 +1,6 @@
 package com.mononz.crypz.injection.module
 
-import com.mononz.crypz.view.activity.AddEditActivity
+import com.mononz.crypz.view.activity.AddActivity
 import com.mononz.crypz.view.activity.MainActivity
 
 import dagger.Module
@@ -13,6 +13,6 @@ abstract class ActivityBuilderModule {
     abstract fun mainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [(FragmentBuilderModule::class)])
-    abstract fun addEditActivity(): AddEditActivity
+    abstract fun addEditActivity(): AddActivity
 
 }

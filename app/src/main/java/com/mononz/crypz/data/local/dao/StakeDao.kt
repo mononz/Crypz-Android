@@ -11,6 +11,9 @@ interface StakeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entities: List<StakeEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(entities: StakeEntity)
+
     @Update()
     fun updateStakes(entities: List<StakeEntity>)
 

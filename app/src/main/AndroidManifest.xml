@@ -22,9 +22,10 @@
         </activity>
 
         <activity
-            android:name=".view.activity.AddEditActivity"
-            android:label="Track New"
-            android:theme="@style/AppTheme" />
+            android:name=".view.activity.AddActivity"
+            android:label="@string/add_new"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
 
     </application>
 

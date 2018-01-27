@@ -22,14 +22,17 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.include_toolbar.*
 import kotlinx.android.synthetic.main.main_activity.*
-import timber.log.Timber
 import javax.inject.Inject
+import android.app.Activity
+import timber.log.Timber
 
 class MainActivity : BaseActivity<MainViewModel>() {
 
     @Inject lateinit var adapter : MainListAdapter
 
     private var disposables = CompositeDisposable()
+
+    private val REQUEST_CODE = 101
 
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
@@ -71,13 +74,21 @@ class MainActivity : BaseActivity<MainViewModel>() {
         })
 
         fab.setOnClickListener {
-            val intent = Intent(this, AddEditActivity::class.java)
+            val intent = Intent(this, AddActivity::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
-                startActivity(intent, options.toBundle())
+                startActivityForResult(intent, REQUEST_CODE, options.toBundle())
                 return@setOnClickListener
             }
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Timber.d("onActivityResult, update")
+            swiperefresh.isRefreshing = true
+            updateStakes()
         }
     }
 
@@ -101,7 +112,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy (
                         onNext = {
-                            Timber.d("Resulted")
                             viewModel?.updateStakes(it)
                         },
                         onError = {

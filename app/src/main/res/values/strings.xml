@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Crypz</string>
-    <string name="menu_refresh">Refresh</string>
+
     <string name="add_new">Track New Crypto</string>
+    <string name="add_market">Market</string>
+    <string name="add_coin">Cryptocurrency</string>
+    <string name="add_stake">Stake</string>
+    <string name="add_stake_input_hint">i.e. 6.25</string>
 </resources>

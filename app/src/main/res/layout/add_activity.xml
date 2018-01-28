@@ -23,7 +23,7 @@
             android:id="@+id/market"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Market"
+            android:text="@string/add_market"
             android:labelFor="@+id/market_dropdown"
             android:padding="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -40,7 +40,7 @@
             android:id="@+id/coin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cryptocurrency"
+            android:text="@string/add_coin"
             android:labelFor="@+id/coin_dropdown"
             android:padding="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -57,7 +57,7 @@
             android:id="@+id/stake"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stake"
+            android:text="@string/add_stake"
             android:labelFor="@+id/stake_input"
             android:paddingTop="8dp"
             android:paddingStart="8dp"
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="i.e. 6.25"/>
+                android:hint="@string/add_stake_input_hint"/>
 
         </android.support.design.widget.TextInputLayout>
 

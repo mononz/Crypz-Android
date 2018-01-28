@@ -59,8 +59,12 @@ class MainActivity : BaseActivity<MainViewModel>() {
             it?.let {
                 if (it.isNotEmpty()) {
                     total_card_layout.visibility = View.VISIBLE
-                    var total = 17561.355
-                    // ToDo add up totals here
+                    var total = 0.0
+                    it.forEach {
+                        val price = if (it.price != null) it.price!! else 0.0
+                        val stake = if (it.stake != null) it.stake!! else 0.0
+                        total += price * stake
+                    }
                     total_card_value.text = total.pricify2()
                 } else {
                     total_card_layout.visibility = View.GONE

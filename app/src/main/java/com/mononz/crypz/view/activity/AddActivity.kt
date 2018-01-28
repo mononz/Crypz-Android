@@ -173,7 +173,7 @@ class AddActivity : BaseActivity<AddViewModel>() {
     }
 
     private fun saveStake(entity : StakeEntity) {
-        Observable.fromCallable(viewModel?.fakeStake(entity))
+        Observable.fromCallable(viewModel?.saveStake(entity))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy (

@@ -16,9 +16,12 @@ interface StakeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entities: StakeEntity)
 
+    @Update()
+    fun updateStakes(entities: List<StakeEntity>)
+
     @Transaction
     @Query("SELECT " +
-            "stake.stake_id AS stakeId, stake.stake AS stake, stake.price AS price, " +
+            "stake.stake_id AS stakeId, stake.market_coin_id AS marketCoinId, stake.stake AS stake, stake.price AS price, stake.created_at AS createdAt, " +
             "coin.name AS coinName, coin.code AS coinCode, coin.icon AS coinIcon, " +
             "market.name AS marketName " +
             "FROM stake " +
@@ -29,11 +32,12 @@ interface StakeDao {
             "ORDER BY coin.code ASC, market.name ASC")
     fun getActiveTrackings(): LiveData<List<StakeSummary>>
 
-    @Update()
-    fun updateStakes(entities: List<StakeEntity>)
-
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Transaction
     @Query("SELECT stake_id,market_coin_id,price,stake,created_at FROM stake")
     fun getStakesForNetwork(): Single<List<StakeEntity>>
+
+    @Delete
+    fun deleteStake(entity: StakeEntity)
 
 }

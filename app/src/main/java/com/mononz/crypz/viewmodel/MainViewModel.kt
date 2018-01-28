@@ -9,6 +9,7 @@ import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.data.remote.model.MsStake
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.concurrent.Callable
 
 import javax.inject.Inject
 
@@ -34,5 +35,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
             entities.add(StakeEntity.createEntity(it))
         })
         return repository.updateStakes(entities)
+    }
+
+    fun deleteStake(entity : StakeSummary) : StakeEntity {
+        val stakeEntity = StakeEntity.createEntity(entity)
+        repository.deleteStake(stakeEntity)
+        return stakeEntity
+    }
+
+    fun saveStake(stake : StakeEntity) : Callable<Unit> {
+        return repository.insertStake(stake)
     }
 }

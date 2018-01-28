@@ -9,20 +9,30 @@ import com.mononz.crypz.base.BaseAdapter
 import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.extension.loadUrl
 import com.mononz.crypz.extension.pricify
-import com.mononz.crypz.extension.pricify2
 import com.mononz.crypz.extension.thousands
 import kotlinx.android.synthetic.main.main_element.view.*
-import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapter.ViewHolder, StakeSummary, MainListAdapter.Callback>() {
 
-    private var mContent: List<StakeSummary> = ArrayList()
+    private var mContent: ArrayList<StakeSummary> = ArrayList()
     private var mCallback: Callback? = null
 
     override fun setData(data: List<StakeSummary>) {
-        this.mContent = data
+        this.mContent = ArrayList(data)
         notifyDataSetChanged()
+        updateTotals()
+    }
+
+    private fun updateTotals() {
+        var total = 0.0
+        mContent.forEach {
+            val price = if (it.price != null) it.price!! else 0.0
+            val stake = if (it.stake != null) it.stake!! else 0.0
+            total += price * stake
+        }
+        mCallback?.totalsUpdated(total)
     }
 
     override fun setCallback(callback: Callback) {
@@ -33,8 +43,16 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
         return mContent.size
     }
 
+    fun removeAtPosition(position : Int) : StakeSummary {
+        val entity = mContent[position]
+        notifyItemRemoved(position)
+        mContent.removeAt(position)
+        updateTotals()
+        return entity
+    }
+
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(mContent[position], mCallback)
+        viewHolder.bind(mContent[position])
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -43,7 +61,7 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(obj: StakeSummary, callback: Callback?) {
+        fun bind(obj: StakeSummary) {
             val current : Double? = if (obj.price != null) obj.price else 0.0
             val stake : Double? = if (obj.stake != null) obj.stake else 0.0
             val total = current!! * stake!!
@@ -53,18 +71,17 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
 
             itemView.coin.text = displayTitle
             itemView.market.text = displayStake
-            itemView.current.text = current.pricify2()
+
+            itemView.current.text = current.pricify()
             itemView.total.text = total.pricify()
 
-            itemView.icon.loadUrl(obj.coinIcon, R.mipmap.ic_launcher_round)
+            itemView.icon.loadUrl(obj.coinIcon)
             itemView.icon.contentDescription = obj.coinName
-
-            itemView.rootView.setOnClickListener({ callback?.clicked(obj.stakeId) })
         }
     }
 
     interface Callback {
-        fun clicked(stakeId: Int?)
+        fun totalsUpdated(total: Double)
     }
 
 }

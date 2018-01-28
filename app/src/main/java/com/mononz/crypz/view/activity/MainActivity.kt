@@ -5,21 +5,26 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
+import android.widget.TextView
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
 import com.mononz.crypz.data.Repository
 import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity
-import com.mononz.crypz.extension.pricify2
+import com.mononz.crypz.extension.pricify
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
 import dagger.android.AndroidInjection
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -29,13 +34,15 @@ import kotlinx.android.synthetic.main.include_toolbar.*
 import kotlinx.android.synthetic.main.main_activity.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainViewModel>() {
+class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
-    @Inject lateinit var repository: Repository
+    @Inject lateinit var repository : Repository
 
     @Inject lateinit var adapter : MainListAdapter
 
     private var disposables = CompositeDisposable()
+
+    private var stakeEntity : StakeEntity? = null
 
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
@@ -55,20 +62,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
         recycler.adapter = adapter
         recycler.isNestedScrollingEnabled = false
 
+        adapter.setCallback(this)
+
         viewModel?.getActiveTrackings()?.observe(this, Observer<List<StakeSummary>> {
             it?.let {
-                if (it.isNotEmpty()) {
-                    total_card_layout.visibility = View.VISIBLE
-                    var total = 0.0
-                    it.forEach {
-                        val price = if (it.price != null) it.price!! else 0.0
-                        val stake = if (it.stake != null) it.stake!! else 0.0
-                        total += price * stake
-                    }
-                    total_card_value.text = total.pricify2()
-                } else {
-                    total_card_layout.visibility = View.GONE
-                }
                 adapter.setData(it)
             }
         })
@@ -83,6 +80,16 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                deleteStake(viewHolder.adapterPosition)
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(recycler)
 
         swiperefresh.setOnRefreshListener({
             updateStakes()
@@ -112,6 +119,35 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 swiperefresh.isRefreshing = true
                 updateStakes()
             }
+        }
+    }
+
+    override fun totalsUpdated(total: Double) {
+        total_card_value.text = total.pricify()
+        total_card_layout.visibility = if (total == 0.0) View.GONE else View.VISIBLE
+    }
+
+    private fun deleteStake(position : Int) {
+        val entity = adapter.removeAtPosition(position)
+        stakeEntity = viewModel?.deleteStake(entity)
+        val mSnackBar = Snackbar.make(coordinator, getString(R.string.main_snack_text), Snackbar.LENGTH_LONG)
+        mSnackBar.setAction(getString(R.string.main_snack_action)) { snackAction() }
+        mSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.white))
+        val tv = mSnackBar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+        tv.setTextColor(ContextCompat.getColor(this, R.color.white))
+        mSnackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+        mSnackBar.show()
+    }
+
+    private fun snackAction() {
+        stakeEntity?.let {
+            Observable.fromCallable(viewModel?.saveStake(it))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy (
+                            onNext = {  },
+                            onError =  { it.printStackTrace() },
+                            onComplete = { stakeEntity = null })
         }
     }
 

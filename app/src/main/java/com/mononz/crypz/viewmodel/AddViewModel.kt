@@ -2,18 +2,12 @@ package com.mononz.crypz.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.mononz.crypz.data.Repository
-
 import com.mononz.crypz.data.local.entity.CoinEntity
 import com.mononz.crypz.data.local.entity.MarketCoinEntity
 import com.mononz.crypz.data.local.entity.MarketEntity
 import com.mononz.crypz.data.local.entity.StakeEntity
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Callable
-
 import javax.inject.Inject
 
 class AddViewModel @Inject constructor() : ViewModel() {

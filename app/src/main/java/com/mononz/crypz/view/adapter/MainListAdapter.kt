@@ -12,16 +12,16 @@ import com.mononz.crypz.extension.pricify
 import com.mononz.crypz.extension.pricify2
 import com.mononz.crypz.extension.thousands
 import kotlinx.android.synthetic.main.main_element.view.*
-import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapter.ViewHolder, StakeSummary, MainListAdapter.Callback>() {
 
-    private var mContent: List<StakeSummary> = ArrayList()
+    private var mContent: ArrayList<StakeSummary> = ArrayList()
     private var mCallback: Callback? = null
 
     override fun setData(data: List<StakeSummary>) {
-        this.mContent = data
+        this.mContent = ArrayList(data)
         notifyDataSetChanged()
     }
 
@@ -31,6 +31,11 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
 
     override fun getItemCount(): Int {
         return mContent.size
+    }
+
+    fun removeAtPosition(position : Int) {
+        mContent.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

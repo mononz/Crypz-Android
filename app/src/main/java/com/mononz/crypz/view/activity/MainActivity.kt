@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
@@ -69,6 +70,17 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removeAtPosition(viewHolder.adapterPosition)
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(recycler)
+
 
         swiperefresh.setOnRefreshListener({
             updateStakes()

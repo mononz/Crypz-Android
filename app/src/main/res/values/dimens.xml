@@ -9,6 +9,6 @@
     <dimen name="icon_32">32dp</dimen>
 
     <dimen name="list_bottom">80dp</dimen>
-    <dimen name="spinner_min_height">32p</dimen>
+    <dimen name="spinner_min_height">32dp</dimen>
 
 </resources>

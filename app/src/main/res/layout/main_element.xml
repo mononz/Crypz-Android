@@ -10,6 +10,7 @@
 
     <ImageView
         android:id="@+id/icon"
+        android:contentDescription="@null"
         android:layout_width="@dimen/icon_32"
         android:layout_height="@dimen/icon_32"
         tools:src="@mipmap/ic_launcher_round"

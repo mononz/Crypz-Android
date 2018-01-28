@@ -1,6 +1,8 @@
 package com.mononz.crypz.data.local.dao
 
-import android.arch.persistence.room.*
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
 import com.mononz.crypz.data.local.entity.SettingEntity
 
 @Dao

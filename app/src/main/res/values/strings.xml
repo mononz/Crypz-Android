@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Crypz</string>
 
+    <string name="main_total_worth">Total Worth</string>
+
     <string name="add_new">Track New Crypto</string>
     <string name="add_market">Market</string>
     <string name="add_coin">Cryptocurrency</string>

@@ -25,7 +25,7 @@
             android:scrollbars="vertical"
             tools:listitem="@layout/main_element"
             android:clipToPadding="false"
-            android:paddingBottom="80dp"/>
+            android:paddingBottom="@dimen/list_bottom"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

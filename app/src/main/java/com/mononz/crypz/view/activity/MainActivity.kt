@@ -1,5 +1,6 @@
 package com.mononz.crypz.view.activity
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Build
@@ -10,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
+import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
+import com.mononz.crypz.data.Repository
+import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
@@ -22,10 +26,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.include_toolbar.*
 import kotlinx.android.synthetic.main.main_activity.*
 import javax.inject.Inject
-import android.app.Activity
-import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
-import com.mononz.crypz.data.Repository
-import com.mononz.crypz.data.local.custom.StakeSummary
 
 class MainActivity : BaseActivity<MainViewModel>() {
 

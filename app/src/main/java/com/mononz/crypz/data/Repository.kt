@@ -5,10 +5,7 @@ import com.mononz.crypz.base.Constants
 import com.mononz.crypz.controller.PreferenceHelper
 import com.mononz.crypz.data.local.CrypzDatabase
 import com.mononz.crypz.data.local.custom.StakeSummary
-import com.mononz.crypz.data.local.entity.CoinEntity
-import com.mononz.crypz.data.local.entity.MarketCoinEntity
-import com.mononz.crypz.data.local.entity.MarketEntity
-import com.mononz.crypz.data.local.entity.StakeEntity
+import com.mononz.crypz.data.local.entity.*
 import com.mononz.crypz.data.remote.NetworkInterface
 import com.mononz.crypz.data.remote.model.MsStake
 import io.reactivex.Observable
@@ -56,6 +53,7 @@ class Repository @Inject constructor() {
             json.put(CoinEntity.TABLE_NAME, lastUpdatedAt(CoinEntity.TABLE_NAME))
             json.put(MarketEntity.TABLE_NAME, lastUpdatedAt(MarketEntity.TABLE_NAME))
             json.put(MarketCoinEntity.TABLE_NAME, lastUpdatedAt(MarketCoinEntity.TABLE_NAME))
+            json.put(SettingEntity.TABLE_NAME, lastUpdatedAt(SettingEntity.TABLE_NAME))
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -68,15 +66,18 @@ class Repository @Inject constructor() {
                             val coin = ArrayList<CoinEntity>()
                             val market = ArrayList<MarketEntity>()
                             val marketCoin = ArrayList<MarketCoinEntity>()
+                            val setting = ArrayList<SettingEntity>()
 
                             it.data!!.coin!!.mapTo(coin) { CoinEntity.createEntity(it) }
                             it.data!!.market!!.mapTo(market) { MarketEntity.createEntity(it) }
                             it.data!!.market_coin!!.mapTo(marketCoin) { MarketCoinEntity.createEntity(it) }
+                            it.data!!.setting!!.mapTo(setting) { SettingEntity.createEntity(it) }
 
                             asyncSave(Callable{
                                 database.coinDao().insert(coin)
                                 database.marketDao().insert(market)
                                 database.marketCoinDao().insert(marketCoin)
+                                database.settingDao().insert(setting)
                                 true
                             })
                         },

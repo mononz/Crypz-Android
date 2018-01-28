@@ -75,12 +75,12 @@ android {
         staging {
             multiDexEnabled true
             dimension 'mononz'
-            buildConfigField 'String', 'SERVER_PATH', '"http://45.63.53.161:3005/"'
+            buildConfigField 'String', 'SERVER_PATH', '"https://crypz.mononz.net/"'
             resValue "string", "application_name",  "Crypz Beta"
         }
         prod {
             dimension 'mononz'
-            buildConfigField 'String', 'SERVER_PATH', '"http://45.63.53.161:3005/"'
+            buildConfigField 'String', 'SERVER_PATH', '"https://crypz.mononz.net/"'
             resValue "string", "application_name",  "Crypz"
         }
     }
@@ -159,6 +159,7 @@ dependencies {
     // Other Libraries
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.ext.rxKotlinVersion"
+    implementation "com.caverock:androidsvg:$rootProject.ext.androidSvgVersion"
 
     // Testing Dependencies
     testImplementation "junit:junit:$rootProject.ext.junitVersion"

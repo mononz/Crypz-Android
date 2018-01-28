@@ -35,6 +35,7 @@ class CoinEntity {
             entity.coinId = json.coin_id
             entity.code = json.code
             entity.name = json.name
+            entity.icon = json.icon
             entity.enabled = json.enabled
             entity.createdAt = json.created_at
             entity.updatedAt = json.updated_at

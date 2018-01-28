@@ -1,31 +1,31 @@
 package com.mononz.crypz.view.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.transition.Slide
 import android.view.Gravity
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.data.Repository
+import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.viewmodel.AddViewModel
 import dagger.android.AndroidInjection
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.add_activity.*
 import kotlinx.android.synthetic.main.include_toolbar.*
-import javax.inject.Inject
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import com.mononz.crypz.data.local.entity.StakeEntity
-import io.reactivex.Observable
 import timber.log.Timber
-import android.text.Editable
-import android.text.TextWatcher
-import android.app.Activity
-import android.content.Intent
+import javax.inject.Inject
 
 class AddActivity : BaseActivity<AddViewModel>() {
 

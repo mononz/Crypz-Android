@@ -3,6 +3,8 @@
     <string name="app_name">Crypz</string>
 
     <string name="main_total_worth">Total Worth</string>
+    <string name="main_snack_text">Crypz entry deleted</string>
+    <string name="main_snack_action">UNDO</string>
 
     <string name="add_new">Track New Crypto</string>
     <string name="add_market">Market</string>

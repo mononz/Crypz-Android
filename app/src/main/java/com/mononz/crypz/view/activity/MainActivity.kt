@@ -3,15 +3,18 @@ package com.mononz.crypz.view.activity
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
+import android.widget.TextView
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
@@ -22,6 +25,7 @@ import com.mononz.crypz.extension.pricify
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
 import dagger.android.AndroidInjection
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -83,8 +87,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
                 return false
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val entity = adapter.removeAtPosition(viewHolder.adapterPosition)
-                stakeEntity = viewModel?.deleteStake(entity)
+                deleteStake(viewHolder.adapterPosition)
             }
         })
         itemTouchHelper.attachToRecyclerView(recycler)
@@ -123,6 +126,30 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
     override fun totalsUpdated(total: Double) {
         total_card_value.text = total.pricify()
         total_card_layout.visibility = if (total == 0.0) View.GONE else View.VISIBLE
+    }
+
+    private fun deleteStake(position : Int) {
+        val entity = adapter.removeAtPosition(position)
+        stakeEntity = viewModel?.deleteStake(entity)
+        val mSnackBar = Snackbar.make(coordinator, getString(R.string.main_snack_text), Snackbar.LENGTH_LONG)
+        mSnackBar.setAction(getString(R.string.main_snack_action)) { snackAction() }
+        mSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.white))
+        val tv = mSnackBar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+        tv.setTextColor(ContextCompat.getColor(this, R.color.white))
+        mSnackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+        mSnackBar.show()
+    }
+
+    private fun snackAction() {
+        stakeEntity?.let {
+            Observable.fromCallable(viewModel?.saveStake(it))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy (
+                            onNext = {  },
+                            onError =  { it.printStackTrace() },
+                            onComplete = { stakeEntity = null })
+        }
     }
 
     private fun updateStakes() {

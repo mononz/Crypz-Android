@@ -26,7 +26,7 @@ class AddViewModel @Inject constructor() : ViewModel() {
         return repository.validateMarketCoinSelection(marketId, coinId)
     }
 
-    fun fakeStake(stake : StakeEntity) : Callable<Unit> {
+    fun saveStake(stake : StakeEntity) : Callable<Unit> {
         return repository.insertStake(stake)
     }
 }

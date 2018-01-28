@@ -8,6 +8,7 @@ class MsSync {
         var coin: Array<Coin>? = null
         var market: Array<Market>? = null
         var market_coin: Array<MarketCoin>? = null
+        var setting: Array<Setting>? = null
     }
 
     class Coin {
@@ -35,6 +36,14 @@ class MsSync {
         var market_id: Int? = null
         var coin_id: Int? = null
         var enabled: Int? = null
+        var created_at: String? = null
+        var updated_at: String? = null
+    }
+
+    class Setting {
+        var setting_id: Int? = null
+        var property: String? = null
+        var value: String? = null
         var created_at: String? = null
         var updated_at: String? = null
     }

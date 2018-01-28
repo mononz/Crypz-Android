@@ -136,7 +136,7 @@ class AddActivity : BaseActivity<AddViewModel>() {
                             val names = ArrayList<String?>()
                             it.forEach {
                                 ids.add(it.coinId)
-                                names.add("(${it.code?.toUpperCase()}) ${it.name}")
+                                names.add("${it.code?.toUpperCase()} \u00b7 ${it.name}")
                             }
                             setAdapterCoin(ids, names)
                         },

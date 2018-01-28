@@ -9,12 +9,14 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
 import com.mononz.crypz.data.Repository
 import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity
+import com.mononz.crypz.extension.pricify2
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
 import dagger.android.AndroidInjection
@@ -55,6 +57,14 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         viewModel?.getActiveTrackings()?.observe(this, Observer<List<StakeSummary>> {
             it?.let {
+                if (it.isNotEmpty()) {
+                    total_card_layout.visibility = View.VISIBLE
+                    var total = 17561.355
+                    // ToDo add up totals here
+                    total_card_value.text = total.pricify2()
+                } else {
+                    total_card_layout.visibility = View.GONE
+                }
                 adapter.setData(it)
             }
         })

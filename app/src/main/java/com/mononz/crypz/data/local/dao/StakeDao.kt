@@ -21,7 +21,8 @@ interface StakeDao {
             "INNER JOIN market_coin ON market_coin.market_coin_id=stake.market_coin_id " +
             "INNER JOIN coin ON coin.coin_id=market_coin.coin_id " +
             "INNER JOIN market ON market.market_id=market_coin.market_id " +
-            "WHERE coin.enabled=1 AND market.enabled=1 AND market_coin.enabled=1")
+            "WHERE coin.enabled=1 AND market.enabled=1 AND market_coin.enabled=1 " +
+            "ORDER BY coin.code ASC, market.name ASC")
     fun getActiveTrackings(): LiveData<List<StakeSummary>>
 
     @Update()

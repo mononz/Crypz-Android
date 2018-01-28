@@ -45,11 +45,10 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
             val current : Double? = if (obj.price != null) obj.price else 0.0
             val stake : Double? = if (obj.stake != null) obj.stake else 0.0
             val total = current!! * stake!!
-            val displayStake = stake.toString() + if (obj.coinCode != null) " " + obj.coinCode?.toUpperCase() else ""
+            val displayStake = obj.marketName + " \u00b7 " + stake.toString()
 
-            itemView.coin.text = obj.coinName
-            itemView.market.text = obj.marketName
-            itemView.stake.text = displayStake
+            itemView.coin.text = (if (obj.coinCode != null) obj.coinCode?.toUpperCase() + " \u00b7 " else "") + obj.coinName
+            itemView.market.text = displayStake
             itemView.current.text = current.pricify2()
             itemView.total.text = total.pricify()
 

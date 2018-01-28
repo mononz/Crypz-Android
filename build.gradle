@@ -60,6 +60,7 @@ ext {
     // Other Libraries
     rxAndroidVersion = '2.0.1'        // https://github.com/ReactiveX/RxAndroid/releases
     rxKotlinVersion = '2.2.0'         // https://github.com/ReactiveX/RxKotlin/releases
+    androidSvgVersion = '1.2.1'       // https://github.com/BigBadaboom/androidsvg/releases
 
     // Testing Dependencies
     junitVersion = '4.12'

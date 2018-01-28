@@ -30,16 +30,6 @@ class StakeEntity {
 
         const val TABLE_NAME = "stake"
 
-        fun createEntity(market_coin_id: Int?, price: Double?, stake: Double?): StakeEntity {
-            val entity = StakeEntity()
-            entity.marketCoinId = market_coin_id
-            entity.price = price
-            entity.stake = stake
-            entity.createdAt = Date().newUtc()
-            entity.updatedAt = Date().newUtc()
-            return entity
-        }
-
         fun createEntity(market_coin_id: Int?, stake: Double?): StakeEntity {
             val entity = StakeEntity()
             entity.marketCoinId = market_coin_id

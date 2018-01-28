@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="8dp"
+        android:padding="@dimen/margin_half"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/tool"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add_market"
             android:labelFor="@+id/market_dropdown"
-            android:padding="8dp"
+            android:padding="@dimen/margin_half"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:id="@+id/market_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="32dp"
+            android:minHeight="@dimen/spinner_min_height"
             android:layout_marginBottom="8dp"/>
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add_coin"
             android:labelFor="@+id/coin_dropdown"
-            android:padding="8dp"
+            android:padding="@dimen/margin_half"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="bold" />
 
@@ -50,8 +50,8 @@
             android:id="@+id/coin_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="32dp"
-            android:layout_marginBottom="8dp"/>
+            android:minHeight="@dimen/spinner_min_height"
+            android:layout_marginBottom="@dimen/margin_half"/>
 
         <TextView
             android:id="@+id/stake"
@@ -59,9 +59,9 @@
             android:layout_height="wrap_content"
             android:text="@string/add_stake"
             android:labelFor="@+id/stake_input"
-            android:paddingTop="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingStart="@dimen/margin_half"
+            android:paddingEnd="@dimen/margin_half"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="bold" />
 
@@ -69,8 +69,8 @@
             android:id="@+id/stake_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="@dimen/margin_quarter"
+            android:layout_marginEnd="@dimen/margin_quarter"
             app:errorEnabled="true"
             app:hintEnabled="false">
 

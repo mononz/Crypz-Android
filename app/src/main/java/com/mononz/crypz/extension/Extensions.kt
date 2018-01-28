@@ -1,13 +1,14 @@
 package com.mononz.crypz.extension
 
+import android.graphics.drawable.PictureDrawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.mononz.crypz.library.svg.SvgSoftwareLayerSetter
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.util.*
 import java.text.SimpleDateFormat
-
+import java.util.*
 
 fun Double.pricify() : String {
     val format = NumberFormat.getCurrencyInstance(Locale.US)
@@ -34,10 +35,23 @@ fun ImageView.loadUrl(url: String?, placeholder : Int) {
     val options = RequestOptions()
             .placeholder(placeholder)
             .error(null)
-    Glide.with(context)
-            .load(url)
-            .apply(options)
-            .into(this)
+
+    if (isSvgImage(url)) {
+        Glide.with(context)
+                .`as`(PictureDrawable::class.java)
+                .apply(options)
+                .listener(SvgSoftwareLayerSetter())
+                .load(url).into(this)
+    } else {
+        Glide.with(context)
+                .load(url)
+                .apply(options)
+                .into(this)
+    }
+}
+
+private fun isSvgImage(url: String?): Boolean {
+    return url != null && url.endsWith(".svg")
 }
 
 fun ImageView.loadUrl(url: String?) {

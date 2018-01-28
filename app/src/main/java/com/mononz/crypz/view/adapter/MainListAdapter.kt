@@ -57,6 +57,7 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
             itemView.total.text = total.pricify()
 
             itemView.icon.loadUrl(obj.coinIcon, R.mipmap.ic_launcher_round)
+            itemView.icon.contentDescription = obj.coinName
 
             itemView.rootView.setOnClickListener({ callback?.clicked(obj.stakeId) })
         }

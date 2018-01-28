@@ -24,21 +24,21 @@ import javax.inject.Inject
 
 class Repository @Inject constructor() {
 
-    @Inject lateinit var network: NetworkInterface
-    @Inject lateinit var database: CrypzDatabase
-    @Inject lateinit var session: PreferenceHelper
+    @Inject lateinit var network : NetworkInterface
+    @Inject lateinit var database : CrypzDatabase
+    @Inject lateinit var session : PreferenceHelper
 
     private val disposables = CompositeDisposable()
 
-    fun getActiveTrackings(): LiveData<List<StakeSummary>> {
+    fun getActiveTrackings() : LiveData<List<StakeSummary>> {
         return database.stakeDao().getActiveTrackings()
     }
 
-    fun getStakesForNetwork(): Single<List<StakeEntity>> {
+    fun getStakesForNetwork() : Single<List<StakeEntity>> {
         return database.stakeDao().getStakesForNetwork()
     }
 
-    fun sync(force: Boolean) {
+    fun sync(force : Boolean) {
         val thresholdMillis = 1 * 60 * 1000  // 1 mins
         if (force || System.currentTimeMillis() > session.lastUpdated + thresholdMillis) {
             sync()
@@ -91,7 +91,7 @@ class Repository @Inject constructor() {
         disposables.add(d)
     }
 
-    private fun lastUpdatedAt(tableName: String): String {
+    private fun lastUpdatedAt(tableName : String): String {
         var value = "0"
         val c = database.query("SELECT updated_at FROM $tableName ORDER BY updated_at DESC LIMIT 1", null)
         if (c != null) {
@@ -103,7 +103,7 @@ class Repository @Inject constructor() {
         return value
     }
 
-    private fun asyncSave(callable: Callable<*>) {
+    private fun asyncSave(callable : Callable<*>) {
         Observable.fromCallable(callable)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -127,9 +127,15 @@ class Repository @Inject constructor() {
         return network.renewStakePrices(Constants.HEADER_JSON, RequestBody.create(MediaType.parse(Constants.HEADER_JSON), stakes.toString()))
     }
 
-    fun updateStakes(entities: List<StakeEntity>) {
+    fun updateStakes(entities : List<StakeEntity>) {
         asyncSave(Callable {
             database.stakeDao().updateStakes(entities)
+        })
+    }
+
+    fun deleteStake(entity : StakeEntity) {
+        asyncSave(Callable {
+            database.stakeDao().deleteStake(entity)
         })
     }
 

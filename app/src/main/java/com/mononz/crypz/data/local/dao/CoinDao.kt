@@ -10,6 +10,7 @@ interface CoinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entities: List<CoinEntity>)
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Transaction
     @Query("SELECT * FROM coin " +
             "INNER JOIN market_coin ON market_coin.coin_id = coin.coin_id " +

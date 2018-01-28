@@ -3,6 +3,7 @@ package com.mononz.crypz.data.local.entity
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity.Companion.TABLE_NAME
 import com.mononz.crypz.data.remote.model.MsStake
 import com.mononz.crypz.extension.newUtc
@@ -47,6 +48,17 @@ class StakeEntity {
             entity.price = json.price
             entity.stake = json.stake
             entity.createdAt = json.created_at
+            entity.updatedAt = Date().newUtc()
+            return entity
+        }
+
+        fun createEntity(summary: StakeSummary): StakeEntity {
+            val entity = StakeEntity()
+            entity.stakeId = summary.stakeId
+            entity.marketCoinId = summary.marketCoinId
+            entity.price = summary.price
+            entity.stake = summary.stake
+            entity.createdAt = summary.createdAt
             entity.updatedAt = Date().newUtc()
             return entity
         }

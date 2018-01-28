@@ -35,4 +35,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
         })
         return repository.updateStakes(entities)
     }
+
+    fun deleteStake(entity : StakeSummary) : StakeEntity {
+        val stakeEntity = StakeEntity.createEntity(entity)
+        repository.deleteStake(stakeEntity)
+        return stakeEntity
+    }
 }

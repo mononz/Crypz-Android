@@ -15,14 +15,6 @@ fun Double.pricify() : String {
     return format.format(this)
 }
 
-fun Double.pricify2() : String {
-    val formatter = NumberFormat.getInstance(Locale.US) as DecimalFormat
-    val symbols = formatter.decimalFormatSymbols
-    symbols.groupingSeparator = ','
-    formatter.decimalFormatSymbols = symbols
-    return "$" + formatter.format(this)
-}
-
 fun Double.thousands() : String {
     val formatter = NumberFormat.getInstance(Locale.US) as DecimalFormat
     val symbols = formatter.decimalFormatSymbols
@@ -50,18 +42,27 @@ fun ImageView.loadUrl(url: String?, placeholder : Int) {
     }
 }
 
-private fun isSvgImage(url: String?): Boolean {
-    return url != null && url.endsWith(".svg")
-}
-
 fun ImageView.loadUrl(url: String?) {
     val options = RequestOptions()
             .placeholder(null)
             .error(null)
-    Glide.with(context)
-            .load(url)
-            .apply(options)
-            .into(this)
+
+    if (isSvgImage(url)) {
+        Glide.with(context)
+                .`as`(PictureDrawable::class.java)
+                .apply(options)
+                .listener(SvgSoftwareLayerSetter())
+                .load(url).into(this)
+    } else {
+        Glide.with(context)
+                .load(url)
+                .apply(options)
+                .into(this)
+    }
+}
+
+private fun isSvgImage(url: String?): Boolean {
+    return url != null && url.endsWith(".svg")
 }
 
 fun Date.newUtc() : String {

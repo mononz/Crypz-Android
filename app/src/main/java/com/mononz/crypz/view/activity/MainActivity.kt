@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -17,7 +18,7 @@ import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
 import com.mononz.crypz.data.Repository
 import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity
-import com.mononz.crypz.extension.pricify2
+import com.mononz.crypz.extension.pricify
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
 import dagger.android.AndroidInjection
@@ -30,13 +31,15 @@ import kotlinx.android.synthetic.main.include_toolbar.*
 import kotlinx.android.synthetic.main.main_activity.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainViewModel>() {
+class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
-    @Inject lateinit var repository: Repository
+    @Inject lateinit var repository : Repository
 
     @Inject lateinit var adapter : MainListAdapter
 
     private var disposables = CompositeDisposable()
+
+    private var stakeEntity : StakeEntity? = null
 
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
@@ -56,20 +59,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
         recycler.adapter = adapter
         recycler.isNestedScrollingEnabled = false
 
+        adapter.setCallback(this)
+
         viewModel?.getActiveTrackings()?.observe(this, Observer<List<StakeSummary>> {
             it?.let {
-                if (it.isNotEmpty()) {
-                    total_card_layout.visibility = View.VISIBLE
-                    var total = 0.0
-                    it.forEach {
-                        val price = if (it.price != null) it.price!! else 0.0
-                        val stake = if (it.stake != null) it.stake!! else 0.0
-                        total += price * stake
-                    }
-                    total_card_value.text = total.pricify2()
-                } else {
-                    total_card_layout.visibility = View.GONE
-                }
                 adapter.setData(it)
             }
         })
@@ -90,11 +83,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 return false
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.removeAtPosition(viewHolder.adapterPosition)
+                val entity = adapter.removeAtPosition(viewHolder.adapterPosition)
+                stakeEntity = viewModel?.deleteStake(entity)
             }
         })
         itemTouchHelper.attachToRecyclerView(recycler)
-
 
         swiperefresh.setOnRefreshListener({
             updateStakes()
@@ -125,6 +118,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 updateStakes()
             }
         }
+    }
+
+    override fun totalsUpdated(total: Double) {
+        total_card_value.text = total.pricify()
+        total_card_layout.visibility = if (total == 0.0) View.GONE else View.VISIBLE
     }
 
     private fun updateStakes() {

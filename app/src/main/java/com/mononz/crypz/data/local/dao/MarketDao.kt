@@ -10,6 +10,7 @@ interface MarketDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entities: List<MarketEntity>)
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Transaction
     @Query("SELECT * FROM market " +
             "INNER JOIN market_coin ON market_coin.market_id = market.market_id " +

@@ -24,10 +24,12 @@ import kotlinx.android.synthetic.main.main_activity.*
 import javax.inject.Inject
 import android.app.Activity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
+import com.mononz.crypz.data.Repository
 import com.mononz.crypz.data.local.custom.StakeSummary
-import timber.log.Timber
 
 class MainActivity : BaseActivity<MainViewModel>() {
+
+    @Inject lateinit var repository: Repository
 
     @Inject lateinit var adapter : MainListAdapter
 
@@ -84,12 +86,15 @@ class MainActivity : BaseActivity<MainViewModel>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        repository.sync(false)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_ACTIVITY_RC) {
-            Timber.d("onActivityResult, ADD_ACTIVITY_RC")
             if (resultCode == Activity.RESULT_OK) {
-                Timber.d("onActivityResult, RESULT_OK")
                 swiperefresh.isRefreshing = true
                 updateStakes()
             }

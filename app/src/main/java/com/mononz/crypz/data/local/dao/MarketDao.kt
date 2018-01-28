@@ -13,7 +13,9 @@ interface MarketDao {
     @Transaction
     @Query("SELECT * FROM market " +
             "INNER JOIN market_coin ON market_coin.market_id = market.market_id " +
-            "WHERE market.enabled=1 AND market.name IS NOT NULL ORDER BY market.name ASC")
+            "WHERE market.enabled=1 AND market.name IS NOT NULL " +
+            "GROUP BY market.market_id " +
+            "ORDER BY market.name ASC")
     fun getEnabledMarkets(): Single<List<MarketEntity>>
 
 }

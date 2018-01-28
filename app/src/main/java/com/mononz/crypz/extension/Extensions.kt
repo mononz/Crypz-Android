@@ -22,7 +22,25 @@ fun Double.pricify2() : String {
     return "$" + formatter.format(this)
 }
 
-fun ImageView.loadUrlEmpty(url: String) {
+fun Double.thousands() : String {
+    val formatter = NumberFormat.getInstance(Locale.US) as DecimalFormat
+    val symbols = formatter.decimalFormatSymbols
+    symbols.groupingSeparator = ','
+    formatter.decimalFormatSymbols = symbols
+    return formatter.format(this)
+}
+
+fun ImageView.loadUrl(url: String?, placeholder : Int) {
+    val options = RequestOptions()
+            .placeholder(placeholder)
+            .error(null)
+    Glide.with(context)
+            .load(url)
+            .apply(options)
+            .into(this)
+}
+
+fun ImageView.loadUrl(url: String?) {
     val options = RequestOptions()
             .placeholder(null)
             .error(null)

@@ -17,7 +17,11 @@ interface StakeDao {
     fun insert(entities: StakeEntity)
 
     @Transaction
-    @Query("SELECT stake.stake_id AS stakeId, coin.name AS coinName, coin.code AS coinCode, market.name AS marketName, stake.price AS price, stake.stake AS stake FROM stake " +
+    @Query("SELECT " +
+            "stake.stake_id AS stakeId, stake.stake AS stake, stake.price AS price, " +
+            "coin.name AS coinName, coin.code AS coinCode, coin.icon AS coinIcon, " +
+            "market.name AS marketName " +
+            "FROM stake " +
             "INNER JOIN market_coin ON market_coin.market_coin_id=stake.market_coin_id " +
             "INNER JOIN coin ON coin.coin_id=market_coin.coin_id " +
             "INNER JOIN market ON market.market_id=market_coin.market_id " +

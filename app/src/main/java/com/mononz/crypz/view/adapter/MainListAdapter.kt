@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseAdapter
 import com.mononz.crypz.data.local.custom.StakeSummary
+import com.mononz.crypz.extension.loadUrl
 import com.mononz.crypz.extension.pricify
 import com.mononz.crypz.extension.pricify2
+import com.mononz.crypz.extension.thousands
 import kotlinx.android.synthetic.main.main_element.view.*
 import java.util.*
 import javax.inject.Inject
@@ -45,12 +47,16 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
             val current : Double? = if (obj.price != null) obj.price else 0.0
             val stake : Double? = if (obj.stake != null) obj.stake else 0.0
             val total = current!! * stake!!
-            val displayStake = obj.marketName + " \u00b7 " + stake.toString()
 
-            itemView.coin.text = (if (obj.coinCode != null) obj.coinCode?.toUpperCase() + " \u00b7 " else "") + obj.coinName
+            val displayStake = obj.marketName + " \u00b7 " + stake.thousands()
+            val displayTitle = (if (obj.coinCode != null) obj.coinCode?.toUpperCase() + " \u00b7 " else "") + obj.coinName
+
+            itemView.coin.text = displayTitle
             itemView.market.text = displayStake
             itemView.current.text = current.pricify2()
             itemView.total.text = total.pricify()
+
+            itemView.icon.loadUrl(obj.coinIcon, R.mipmap.ic_launcher_round)
 
             itemView.rootView.setOnClickListener({ callback?.clicked(obj.stakeId) })
         }

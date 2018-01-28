@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
-import com.mononz.crypz.data.local.custom.StakeSummary
 import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.view.adapter.MainListAdapter
 import com.mononz.crypz.viewmodel.MainViewModel
@@ -24,6 +23,8 @@ import kotlinx.android.synthetic.main.include_toolbar.*
 import kotlinx.android.synthetic.main.main_activity.*
 import javax.inject.Inject
 import android.app.Activity
+import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
+import com.mononz.crypz.data.local.custom.StakeSummary
 import timber.log.Timber
 
 class MainActivity : BaseActivity<MainViewModel>() {
@@ -31,8 +32,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
     @Inject lateinit var adapter : MainListAdapter
 
     private var disposables = CompositeDisposable()
-
-    private val REQUEST_CODE = 101
 
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
@@ -52,7 +51,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         recycler.adapter = adapter
         recycler.isNestedScrollingEnabled = false
 
-        viewModel?.getCoins()?.observe(this, Observer<List<StakeSummary>> {
+        viewModel?.getActiveTrackings()?.observe(this, Observer<List<StakeSummary>> {
             it?.let {
                 adapter.setData(it)
             }
@@ -77,18 +76,23 @@ class MainActivity : BaseActivity<MainViewModel>() {
             val intent = Intent(this, AddActivity::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
-                startActivityForResult(intent, REQUEST_CODE, options.toBundle())
+                @Suppress("ImplicitThis")
+                startActivityForResult(intent, ADD_ACTIVITY_RC, options.toBundle())
                 return@setOnClickListener
             }
-            startActivityForResult(intent, REQUEST_CODE)
+            startActivityForResult(intent, ADD_ACTIVITY_RC)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Timber.d("onActivityResult, update")
-            swiperefresh.isRefreshing = true
-            updateStakes()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ADD_ACTIVITY_RC) {
+            Timber.d("onActivityResult, ADD_ACTIVITY_RC")
+            if (resultCode == Activity.RESULT_OK) {
+                Timber.d("onActivityResult, RESULT_OK")
+                swiperefresh.isRefreshing = true
+                updateStakes()
+            }
         }
     }
 

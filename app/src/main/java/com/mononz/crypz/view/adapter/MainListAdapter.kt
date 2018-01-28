@@ -42,26 +42,23 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(obj: StakeSummary, callback: Callback?) {
-            itemView.coin.text = if (obj.coins!!.isNotEmpty()) obj.coins!![0].name else ""
-            itemView.market.text = if (obj.markets!!.isNotEmpty()) obj.markets!![0].name else ""
-            val current : Double? = if (obj.stakes!!.isNotEmpty()) obj.stakes!![0].price else 0.0
-            val stake : Double? = if (obj.stakes!!.isNotEmpty()) obj.stakes!![0].stake else 0.0
+            val current : Double? = if (obj.price != null) obj.price else 0.0
+            val stake : Double? = if (obj.stake != null) obj.stake else 0.0
+            val total = current!! * stake!!
+            val displayStake = stake.toString() + if (obj.coinCode != null) " " + obj.coinCode?.toUpperCase() else ""
 
-            var total = 0.0
-            if (current != null && stake != null) {
-                total = current * stake
-            }
-
-            itemView.stake.text = stake.toString() + if (obj.coins!!.isNotEmpty()) " " + obj.coins!![0].code?.toUpperCase() else ""
-            itemView.current.text = current?.pricify2()
+            itemView.coin.text = obj.coinName
+            itemView.market.text = obj.marketName
+            itemView.stake.text = displayStake
+            itemView.current.text = current.pricify2()
             itemView.total.text = total.pricify()
 
-            itemView.rootView.setOnClickListener({ callback?.clicked(obj.marketCoin?.marketCoinId) })
+            itemView.rootView.setOnClickListener({ callback?.clicked(obj.stakeId) })
         }
     }
 
     interface Callback {
-        fun clicked(marketCoinId: Int?)
+        fun clicked(stakeId: Int?)
     }
 
 }

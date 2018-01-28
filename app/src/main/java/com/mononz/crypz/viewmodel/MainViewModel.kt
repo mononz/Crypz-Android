@@ -3,8 +3,8 @@ package com.mononz.crypz.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.mononz.crypz.data.Repository
-
 import com.mononz.crypz.data.local.custom.StakeSummary
+
 import com.mononz.crypz.data.local.entity.StakeEntity
 import com.mononz.crypz.data.remote.model.MsStake
 import io.reactivex.Observable
@@ -16,8 +16,8 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     @Inject lateinit var repository: Repository
 
-    fun getCoins(): LiveData<List<StakeSummary>> {
-        return repository.getCoins()
+    fun getActiveTrackings(): LiveData<List<StakeSummary>> {
+        return repository.getActiveTrackings()
     }
 
     fun getStakesForNetwork(): Single<List<StakeEntity>> {

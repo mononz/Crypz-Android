@@ -33,4 +33,9 @@ class Crypz : Application(), HasActivityInjector {
         return activityDispatchingInjector
     }
 
+    companion object {
+
+        const val ADD_ACTIVITY_RC = 101
+
+    }
 }

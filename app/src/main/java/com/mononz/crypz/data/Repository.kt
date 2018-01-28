@@ -33,8 +33,8 @@ class Repository @Inject constructor() {
 
     private val disposables = CompositeDisposable()
 
-    fun getCoins(): LiveData<List<StakeSummary>> {
-        return database.marketCoinDao().query()
+    fun getActiveTrackings(): LiveData<List<StakeSummary>> {
+        return database.stakeDao().getActiveTrackings()
     }
 
     fun getStakesForNetwork(): Single<List<StakeEntity>> {

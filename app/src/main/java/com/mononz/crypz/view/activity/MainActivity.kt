@@ -37,11 +37,9 @@ import javax.inject.Inject
 class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
     @Inject lateinit var repository : Repository
-
     @Inject lateinit var adapter : MainListAdapter
 
     private var disposables = CompositeDisposable()
-
     private var stakeEntity : StakeEntity? = null
 
     override fun getViewModel(): Class<MainViewModel> {
@@ -104,6 +102,11 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
                 return@setOnClickListener
             }
             startActivityForResult(intent, ADD_ACTIVITY_RC)
+        }
+
+        toolbar.post {
+            swiperefresh.isRefreshing = true
+            updateStakes()
         }
     }
 

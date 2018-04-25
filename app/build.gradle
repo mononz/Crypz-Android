@@ -75,12 +75,12 @@ android {
         staging {
             multiDexEnabled true
             dimension 'mononz'
-            buildConfigField 'String', 'SERVER_PATH', '"https://crypz.mononz.net/"'
+            buildConfigField 'String', 'SERVER_PATH', '"https://api.crypz.mononz.com/"'
             resValue "string", "application_name",  "Crypz Beta"
         }
         prod {
             dimension 'mononz'
-            buildConfigField 'String', 'SERVER_PATH', '"https://crypz.mononz.net/"'
+            buildConfigField 'String', 'SERVER_PATH', '"https://api.crypz.mononz.com/"'
             resValue "string", "application_name",  "Crypz"
         }
     }

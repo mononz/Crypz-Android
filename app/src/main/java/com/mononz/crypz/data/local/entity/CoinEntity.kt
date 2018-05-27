@@ -19,6 +19,8 @@ class CoinEntity {
     var name: String? = null
     @ColumnInfo(name = "icon")
     var icon: String? = null
+    @ColumnInfo(name = "color")
+    var color: String? = null
     @ColumnInfo(name = "enabled")
     var enabled: Int? = null
     @ColumnInfo(name = "created_at")
@@ -36,6 +38,7 @@ class CoinEntity {
             entity.code = json.code
             entity.name = json.name
             entity.icon = json.icon
+            entity.color = json.color
             entity.enabled = json.enabled
             entity.createdAt = json.created_at
             entity.updatedAt = json.updated_at

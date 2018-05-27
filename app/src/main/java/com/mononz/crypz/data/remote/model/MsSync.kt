@@ -16,6 +16,7 @@ class MsSync {
         var code: String? = null
         var name: String? = null
         var icon: String? = null
+        var color: String? = null
         var enabled: Int? = null
         var created_at: String? = null
         var updated_at: String? = null

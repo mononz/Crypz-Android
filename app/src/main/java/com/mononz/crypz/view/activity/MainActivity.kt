@@ -3,6 +3,8 @@ package com.mononz.crypz.view.activity
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PointF
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -12,8 +14,12 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import com.hookedonplay.decoviewlib.charts.EdgeDetail
+import com.hookedonplay.decoviewlib.charts.SeriesItem
+import com.hookedonplay.decoviewlib.charts.SeriesLabel
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
@@ -42,6 +48,17 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
     private var disposables = CompositeDisposable()
     private var stakeEntity : StakeEntity? = null
 
+    val COLOR_BLUE = Color.parseColor("#1D76D2")
+    val COLOR_PINK = Color.parseColor("#FF4081")
+    val COLOR_YELLOW = Color.parseColor("#FFC107")
+    val COLOR_EDGE = Color.parseColor("#22000000")
+    val COLOR_BACK = Color.parseColor("#0166BB66")
+    var mSeriesMax = 100f
+    var mSeries1Index : Int = 0
+    var mSeries2Index: Int = 0
+    var mSeries3Index : Int = 0
+    var mBack1Index : Int = 0
+    
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
     }
@@ -65,6 +82,9 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
         viewModel?.getActiveTrackings()?.observe(this, Observer<List<StakeSummary>> {
             it?.let {
                 adapter.setData(it)
+
+                // Create background track
+                chartMe()
             }
         })
 
@@ -89,9 +109,9 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
         })
         itemTouchHelper.attachToRecyclerView(recycler)
 
-        swiperefresh.setOnRefreshListener({
-            updateStakes()
-        })
+//        swiperefresh.setOnRefreshListener({
+//            updateStakes()
+//        })
 
         fab.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
@@ -105,7 +125,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
         }
 
         toolbar.post {
-            swiperefresh.isRefreshing = true
+            //swiperefresh.isRefreshing = true
             updateStakes()
         }
     }
@@ -119,7 +139,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_ACTIVITY_RC) {
             if (resultCode == Activity.RESULT_OK) {
-                swiperefresh.isRefreshing = true
+                //swiperefresh.isRefreshing = true
                 updateStakes()
             }
         }
@@ -164,7 +184,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
                         },
                         onError = {
                             it.printStackTrace()
-                            swiperefresh.isRefreshing = false
+                            //swiperefresh.isRefreshing = false
                         })
     }
 
@@ -180,8 +200,65 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
                             it.printStackTrace()
                         },
                         onComplete = {
-                            swiperefresh.isRefreshing = false
+                            //swiperefresh.isRefreshing = false
                         })
         disposables.add(d)
+    }
+
+    fun chartMe() {
+
+        chart.executeReset()
+        chart.deleteAll()
+
+        val circleInset = getDimension(23f) - (getDimension(46f) * 0.3f)
+        val seriesBack1Item = SeriesItem.Builder(COLOR_BACK)
+                .setRange(0f, mSeriesMax, mSeriesMax)
+                .setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
+                .setInset(PointF(circleInset, circleInset))
+                .build()
+
+        mBack1Index = chart.addSeries(seriesBack1Item)
+
+        val series1Item = SeriesItem.Builder(COLOR_BLUE)
+                .setRange(0f, mSeriesMax, 0f)
+                .setInitialVisibility(false)
+                .setLineWidth(getDimension(46f))
+                .setSeriesLabel(SeriesLabel.Builder("Men").build())
+                .setCapRounded(false)
+                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
+                .setShowPointWhenEmpty(false)
+                .build()
+
+        mSeries1Index = chart.addSeries(series1Item)
+
+        val series2Item = SeriesItem.Builder(COLOR_PINK)
+                .setRange(0f, mSeriesMax, 0f)
+                .setInitialVisibility(false)
+                .setLineWidth(getDimension(46f))
+                .setSeriesLabel(SeriesLabel.Builder("Women").build())
+                .setCapRounded(false)
+                        //.setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
+                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
+                .setShowPointWhenEmpty(false)
+                .build()
+
+        mSeries2Index = chart.addSeries(series2Item)
+
+        val series3Item = SeriesItem.Builder(COLOR_YELLOW)
+                .setRange(0f, mSeriesMax, 0f)
+                .setInitialVisibility(false)
+                .setLineWidth(getDimension(46f))
+                .setSeriesLabel(SeriesLabel.Builder("Children").build())
+                .setCapRounded(false)
+                        //.setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
+                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
+                .setShowPointWhenEmpty(false)
+                .build()
+
+        mSeries3Index = chart.addSeries(series3Item)
+    }
+
+    private fun getDimension(base:Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, base, resources.displayMetrics)
     }
 }

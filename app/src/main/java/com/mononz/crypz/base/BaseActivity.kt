@@ -1,13 +1,13 @@
 package com.mononz.crypz.base
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.inputmethod.InputMethodManager
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -19,7 +19,7 @@ import javax.inject.Inject
 abstract class BaseActivity<VM : ViewModel> : AppCompatActivity(), HasFragmentInjector,HasSupportFragmentInjector {
 
     @Inject lateinit var fragmentAndroidInjector: DispatchingAndroidInjector<android.app.Fragment>
-    @Inject lateinit var fragmentSupportAndroidInjector: DispatchingAndroidInjector<Fragment>
+    @Inject lateinit var fragmentSupportAndroidInjector: DispatchingAndroidInjector<androidx.fragment.app.Fragment>
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -44,7 +44,7 @@ abstract class BaseActivity<VM : ViewModel> : AppCompatActivity(), HasFragmentIn
         return fragmentAndroidInjector
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
+    override fun supportFragmentInjector(): AndroidInjector<androidx.fragment.app.Fragment>? {
         return fragmentSupportAndroidInjector
     }
 

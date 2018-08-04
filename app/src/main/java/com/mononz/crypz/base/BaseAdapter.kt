@@ -1,9 +1,9 @@
 package com.mononz.crypz.base
 
-import android.support.v7.app.AppCompatDelegate
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<Type : RecyclerView.ViewHolder, in Data, in Callback> : RecyclerView.Adapter<Type>() {
+abstract class BaseAdapter<Type : androidx.recyclerview.widget.RecyclerView.ViewHolder, in Data, in Callback> : androidx.recyclerview.widget.RecyclerView.Adapter<Type>() {
 
     abstract fun setData(data: List<Data>)
 

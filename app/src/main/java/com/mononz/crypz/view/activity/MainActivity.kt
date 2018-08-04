@@ -1,22 +1,19 @@
 package com.mononz.crypz.view.activity
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PointF
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.hookedonplay.decoviewlib.charts.EdgeDetail
 import com.hookedonplay.decoviewlib.charts.SeriesItem
 import com.hookedonplay.decoviewlib.charts.SeriesLabel
@@ -70,10 +67,10 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
         setSupportActionBar(toolbar)
 
-        val llm = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val llm = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         recycler.setHasFixedSize(true)
         recycler.layoutManager = llm
-        recycler.addItemDecoration(DividerItemDecoration(recycler.context, llm.orientation))
+        recycler.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(recycler.context, llm.orientation))
         recycler.adapter = adapter
         recycler.isNestedScrollingEnabled = false
 
@@ -89,7 +86,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
         })
 
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
                     fab.hide()
                 } else {
@@ -100,10 +97,10 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
         })
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
                 return false
             }
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
                 deleteStake(viewHolder.adapterPosition)
             }
         })
@@ -153,11 +150,11 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
     private fun deleteStake(position : Int) {
         val entity = adapter.removeAtPosition(position)
         stakeEntity = viewModel?.deleteStake(entity)
-        val mSnackBar = Snackbar.make(coordinator, getString(R.string.main_snack_text), Snackbar.LENGTH_LONG)
+        val mSnackBar = com.google.android.material.snackbar.Snackbar.make(coordinator, getString(R.string.main_snack_text), com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
         mSnackBar.setAction(getString(R.string.main_snack_action)) { snackAction() }
         mSnackBar.setActionTextColor(ContextCompat.getColor(this, R.color.white))
-        val tv = mSnackBar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-        tv.setTextColor(ContextCompat.getColor(this, R.color.white))
+//        val tv = mSnackBar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+//        tv.setTextColor(ContextCompat.getColor(this, R.color.white))
         mSnackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
         mSnackBar.show()
     }

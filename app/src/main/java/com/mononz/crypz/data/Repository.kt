@@ -1,6 +1,6 @@
 package com.mononz.crypz.data
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.mononz.crypz.base.Constants
 import com.mononz.crypz.controller.PreferenceHelper
 import com.mononz.crypz.data.local.CrypzDatabase

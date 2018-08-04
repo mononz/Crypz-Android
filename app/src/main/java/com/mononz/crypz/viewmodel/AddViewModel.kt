@@ -1,6 +1,6 @@
 package com.mononz.crypz.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.mononz.crypz.data.Repository
 import com.mononz.crypz.data.local.entity.CoinEntity
 import com.mononz.crypz.data.local.entity.MarketCoinEntity

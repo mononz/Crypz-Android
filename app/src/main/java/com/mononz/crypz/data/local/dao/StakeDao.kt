@@ -1,7 +1,7 @@
 package com.mononz.crypz.data.local.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.mononz.crypz.data.local.custom.StakeSummary
 
 import com.mononz.crypz.data.local.entity.StakeEntity

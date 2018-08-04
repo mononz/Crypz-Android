@@ -1,6 +1,6 @@
 package com.mononz.crypz.view.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +59,7 @@ class MainListAdapter @Inject internal constructor() : BaseAdapter<MainListAdapt
         return ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.main_element, viewGroup, false))
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         fun bind(obj: StakeSummary) {
             val current : Double? = if (obj.price != null) obj.price else 0.0

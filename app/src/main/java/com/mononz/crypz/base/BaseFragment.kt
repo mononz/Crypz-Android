@@ -1,15 +1,15 @@
 package com.mononz.crypz.base
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseFragment<VM : ViewModel> : Fragment() {
+abstract class BaseFragment<VM : ViewModel> : androidx.fragment.app.Fragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 

@@ -1,7 +1,7 @@
 package com.mononz.crypz.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.mononz.crypz.data.Repository
 import com.mononz.crypz.data.local.custom.StakeSummary
 

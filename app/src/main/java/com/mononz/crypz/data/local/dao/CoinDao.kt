@@ -1,6 +1,6 @@
 package com.mononz.crypz.data.local.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.mononz.crypz.data.local.entity.CoinEntity
 import io.reactivex.Single
 

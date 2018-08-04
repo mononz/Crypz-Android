@@ -1,7 +1,7 @@
 package com.mononz.crypz.injection.module
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.mononz.crypz.injection.ViewModelFactory
 
 import com.mononz.crypz.injection.ViewModelKey

@@ -1,8 +1,8 @@
 package com.mononz.crypz.data.local.entity
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.mononz.crypz.data.remote.model.MsSync
 
 @Entity(tableName = SettingEntity.TABLE_NAME)

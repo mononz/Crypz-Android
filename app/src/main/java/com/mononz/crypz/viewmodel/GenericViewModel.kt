@@ -1,6 +1,6 @@
 package com.mononz.crypz.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 
 import com.mononz.crypz.data.local.CrypzDatabase
 

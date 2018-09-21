@@ -15,7 +15,7 @@ interface NetworkInterface {
             @Body json: RequestBody)
             : Observable<MsSync>
 
-    @POST("stakes") fun renewStakePrices(
+    @POST("stake") fun renewStakePrices(
             @Header("Content-Type") contentType: String,
             @Body json: RequestBody)
             : Observable<List<MsStake>>

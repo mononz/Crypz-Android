@@ -1,24 +1,21 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.50'
+    ext.kotlin_version = '1.2.61'
     repositories {
         google()
         jcenter()
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://jitpack.io' }
-        maven {
-            name 'glide-snapshot'
-            url 'http://oss.sonatype.org/content/repositories/snapshots'
-        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-alpha01'
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha10'
         classpath 'io.fabric.tools:gradle:1.25.4'                               // https://firebase.google.com/docs/crashlytics/get-started
         classpath 'com.google.gms:google-services:3.2.1'                        // https://developers.google.com/android/guides/google-services-plugin
         classpath 'com.google.firebase:firebase-plugins:1.1.5'                  // https://firebase.google.com/docs/perf-mon/get-started-android
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'       // https://github.com/KeepSafe/dexcount-gradle-plugin/releases
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'          // https://github.com/ben-manes/gradle-versions-plugin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -28,10 +25,6 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven {
-            name 'glide-snapshot'
-            url 'http://oss.sonatype.org/content/repositories/snapshots'
-        }
     }
 }
 

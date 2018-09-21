@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.PointF
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
@@ -12,11 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.TypedValue
 import android.view.View
-import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.hookedonplay.decoviewlib.charts.EdgeDetail
-import com.hookedonplay.decoviewlib.charts.SeriesItem
-import com.hookedonplay.decoviewlib.charts.SeriesLabel
 import com.mononz.crypz.R
 import com.mononz.crypz.base.BaseActivity
 import com.mononz.crypz.base.Crypz.Companion.ADD_ACTIVITY_RC
@@ -44,17 +40,6 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
     private var disposables = CompositeDisposable()
     private var stakeEntity : StakeEntity? = null
-
-    val COLOR_BLUE = Color.parseColor("#1D76D2")
-    val COLOR_PINK = Color.parseColor("#FF4081")
-    val COLOR_YELLOW = Color.parseColor("#FFC107")
-    val COLOR_EDGE = Color.parseColor("#22000000")
-    val COLOR_BACK = Color.parseColor("#0166BB66")
-    var mSeriesMax = 100f
-    var mSeries1Index : Int = 0
-    var mSeries2Index: Int = 0
-    var mSeries3Index : Int = 0
-    var mBack1Index : Int = 0
     
     override fun getViewModel(): Class<MainViewModel> {
         return MainViewModel::class.java
@@ -67,7 +52,7 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
         setSupportActionBar(toolbar)
 
-        val llm = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        val llm = androidx.recyclerview.widget.LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         recycler.setHasFixedSize(true)
         recycler.layoutManager = llm
         recycler.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(recycler.context, llm.orientation))
@@ -121,6 +106,12 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
             startActivityForResult(intent, ADD_ACTIVITY_RC)
         }
 
+        fab.setOnLongClickListener{
+            updateStakes()
+            Toast.makeText(this, "Updating", Toast.LENGTH_SHORT).show()
+            true
+        }
+
         toolbar.post {
             //swiperefresh.isRefreshing = true
             updateStakes()
@@ -144,7 +135,8 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
     override fun totalsUpdated(total: Double) {
         total_card_value.text = total.pricify()
-        total_card_layout.visibility = if (total == 0.0) View.GONE else View.VISIBLE
+        //total_card_layout.visibility = if (total == 0.0) View.GONE else View.VISIBLE
+        total_card_value.visibility = if (total == 0.0) View.GONE else View.VISIBLE
     }
 
     private fun deleteStake(position : Int) {
@@ -204,55 +196,55 @@ class MainActivity : BaseActivity<MainViewModel>(), MainListAdapter.Callback {
 
     fun chartMe() {
 
-        chart.executeReset()
-        chart.deleteAll()
-
-        val circleInset = getDimension(23f) - (getDimension(46f) * 0.3f)
-        val seriesBack1Item = SeriesItem.Builder(COLOR_BACK)
-                .setRange(0f, mSeriesMax, mSeriesMax)
-                .setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
-                .setInset(PointF(circleInset, circleInset))
-                .build()
-
-        mBack1Index = chart.addSeries(seriesBack1Item)
-
-        val series1Item = SeriesItem.Builder(COLOR_BLUE)
-                .setRange(0f, mSeriesMax, 0f)
-                .setInitialVisibility(false)
-                .setLineWidth(getDimension(46f))
-                .setSeriesLabel(SeriesLabel.Builder("Men").build())
-                .setCapRounded(false)
-                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
-                .setShowPointWhenEmpty(false)
-                .build()
-
-        mSeries1Index = chart.addSeries(series1Item)
-
-        val series2Item = SeriesItem.Builder(COLOR_PINK)
-                .setRange(0f, mSeriesMax, 0f)
-                .setInitialVisibility(false)
-                .setLineWidth(getDimension(46f))
-                .setSeriesLabel(SeriesLabel.Builder("Women").build())
-                .setCapRounded(false)
-                        //.setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
-                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
-                .setShowPointWhenEmpty(false)
-                .build()
-
-        mSeries2Index = chart.addSeries(series2Item)
-
-        val series3Item = SeriesItem.Builder(COLOR_YELLOW)
-                .setRange(0f, mSeriesMax, 0f)
-                .setInitialVisibility(false)
-                .setLineWidth(getDimension(46f))
-                .setSeriesLabel(SeriesLabel.Builder("Children").build())
-                .setCapRounded(false)
-                        //.setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
-                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
-                .setShowPointWhenEmpty(false)
-                .build()
-
-        mSeries3Index = chart.addSeries(series3Item)
+//        chart.executeReset()
+//        chart.deleteAll()
+//
+//        val circleInset = getDimension(23f) - (getDimension(46f) * 0.3f)
+//        val seriesBack1Item = SeriesItem.Builder(COLOR_BACK)
+//                .setRange(0f, mSeriesMax, mSeriesMax)
+//                .setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
+//                .setInset(PointF(circleInset, circleInset))
+//                .build()
+//
+//        mBack1Index = chart.addSeries(seriesBack1Item)
+//
+//        val series1Item = SeriesItem.Builder(COLOR_BLUE)
+//                .setRange(0f, mSeriesMax, 0f)
+//                .setInitialVisibility(false)
+//                .setLineWidth(getDimension(46f))
+//                .setSeriesLabel(SeriesLabel.Builder("Men").build())
+//                .setCapRounded(false)
+//                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
+//                .setShowPointWhenEmpty(false)
+//                .build()
+//
+//        mSeries1Index = chart.addSeries(series1Item)
+//
+//        val series2Item = SeriesItem.Builder(COLOR_PINK)
+//                .setRange(0f, mSeriesMax, 0f)
+//                .setInitialVisibility(false)
+//                .setLineWidth(getDimension(46f))
+//                .setSeriesLabel(SeriesLabel.Builder("Women").build())
+//                .setCapRounded(false)
+//                        //.setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
+//                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
+//                .setShowPointWhenEmpty(false)
+//                .build()
+//
+//        mSeries2Index = chart.addSeries(series2Item)
+//
+//        val series3Item = SeriesItem.Builder(COLOR_YELLOW)
+//                .setRange(0f, mSeriesMax, 0f)
+//                .setInitialVisibility(false)
+//                .setLineWidth(getDimension(46f))
+//                .setSeriesLabel(SeriesLabel.Builder("Children").build())
+//                .setCapRounded(false)
+//                        //.setChartStyle(SeriesItem.ChartStyle.STYLE_PIE)
+//                .addEdgeDetail(EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, COLOR_EDGE, 0.3f))
+//                .setShowPointWhenEmpty(false)
+//                .build()
+//
+//        mSeries3Index = chart.addSeries(series3Item)
     }
 
     private fun getDimension(base:Float): Float {

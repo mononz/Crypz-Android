@@ -5,7 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin"
+    android:paddingTop="@dimen/margin_half"
+    android:paddingBottom="@dimen/margin_half"
+    android:paddingStart="@dimen/margin"
+    android:paddingEnd="@dimen/margin"
     android:foreground="?android:attr/selectableItemBackground">
 
     <ImageView
@@ -19,7 +22,7 @@
 
     <androidx.legacy.widget.Space
         android:id="@+id/spacer"
-        android:layout_width="@dimen/margin"
+        android:layout_width="24dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/icon" />
 
